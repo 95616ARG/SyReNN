@@ -1,0 +1,23 @@
+# PYSYRENN
+numpy
+protobuf
+grpcio
+onnx
+tqdm
+# Torch is installed in the BUILD script and specified in pip_info/setup.py.
+aenum
+# END
+coverage
+cairosvg
+pytest
+imageio
+Pillow
+matplotlib
+svgwrite
+# PyClipper dependencies.
+pypoman
+scipy
+pyclipper
+# For building the package.
+setuptools
+wheel

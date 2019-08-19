@@ -1,0 +1,12 @@
+**/experiment_*
+*.csv
+*.log
+analysis_output
+ig_results
+**/bazel-*
+experiments/results/*
+.docker_bazel
+*.swp
+htmlcov
+*.coverage
+__pycache__

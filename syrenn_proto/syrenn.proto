@@ -1,0 +1,163 @@
+syntax = "proto3";
+
+package syrenn_server;
+
+service SyReNNTransformer {
+    rpc Transform (stream TransformRequest) returns (stream TransformResponse) {}
+}
+
+message TransformRequest {
+    oneof request_data {
+        Layer layer = 1;
+        SegmentedLine line = 2;
+        UPolytope upolytope = 3;
+    }
+
+    // Indicates if post-vertices should be returned. If false, only the
+    // pre-endpoints are.
+    bool include_post = 7;
+}
+
+message TransformResponse {
+    oneof response_data {
+        SegmentedLine transformed_line = 1;
+        UPolytope transformed_upolytope = 2;
+    }
+}
+
+message SegmentedLine {
+    // NOTE: The endpoints here *must* be in ascending preimage_ratio order.
+    // Otherwise, the ReLUTransformer will fail. (Alternatively, we could sort
+    // them in server.cc, but that seems unnecessary at this point).
+    repeated SegmentEndpoint endpoints = 1;
+}
+
+message SegmentEndpoint {
+    // All endpoints in a SegmentedLine should have the same number of
+    // coordinates.
+    repeated float coordinates = 1;
+    double preimage_ratio = 2;
+}
+
+message UPolytope {
+    repeated VPolytope polytopes = 1;
+    uint32 space_dimensions = 2;
+    uint32 subspace_dimensions = 3;
+}
+
+message VPolytope {
+    // Row-major order. If subspace_dimensionality == 2, must be in
+    // counter-clockwise order.
+    repeated float vertices = 1;
+    repeated float combinations = 2;
+    uint32 num_vertices = 3;
+}
+
+message Network {
+    // NOTE: We use this for serializing to disk *only* --- the gRPC server
+    // does not support larger queries, so for that we send separate
+    // TransformRequests for each layer in the network.
+    repeated Layer layers = 1;
+}
+
+message MaskingNetwork {
+    // NOTE: We use this for serializing to disk *only* --- the gRPC server
+    // does not support MaskingNetworks. See helpers/masking_network.py for
+    // where this is used.
+    repeated Layer activation_layers = 1;
+    // NOTE: We only include value layers after differ_index.
+    repeated Layer value_layers = 2;
+    // This is the layer index after which the value layers begin to differ
+    // from the activation layers.
+    uint32 differ_index = 3;
+}
+
+message Layer {
+    oneof layer_data {
+        FullyConnectedLayerData fullyconnected_data = 1;
+        Conv2DLayerData conv2d_data = 2;
+        ReluLayerData relu_data = 3;
+        NormalizeLayerData normalize_data = 4;
+        MaxPoolLayerData maxpool_data = 5;
+        AveragePoolLayerData averagepool_data = 6;
+        ConcatLayerData concat_data = 7;
+        HardTanhLayerData hard_tanh_data = 8;
+        ArgMaxLayerData argmax_data = 9;
+    }
+}
+
+message FullyConnectedLayerData {
+    // We infer the in/out dimensions based on the size of the weights and the
+    // biases. This means you must include biases in the message.
+    // NOTE: We assume weights is row-major
+    repeated float weights = 1;
+    repeated float biases = 2;
+}
+
+message StridedWindowData {
+    uint32 in_height = 1;
+    uint32 in_width = 2;
+    uint32 in_channels = 3;
+
+    uint32 window_height = 4;
+    uint32 window_width = 5;
+    uint32 out_channels = 6;
+
+    uint32 stride_height = 7;
+    uint32 stride_width = 8;
+
+    // Symmetric padding; the total (eg.) height padding will be 2 *
+    // pad_height.
+    uint32 pad_height = 9;
+    uint32 pad_width = 10;
+}
+
+message Conv2DLayerData {
+    StridedWindowData window_data = 1;
+    // This must be in HWIO order, row-major.
+    repeated float filters = 9;
+    // biases_size must be equal to the number of output channels (which we
+    // infer based on the number of filters and the other dimensions).
+    repeated float biases = 10;
+}
+
+message MaxPoolLayerData {
+    StridedWindowData window_data = 1;
+}
+
+message AveragePoolLayerData {
+    StridedWindowData window_data = 1;
+}
+
+message ReluLayerData {
+    // Relu layers are unparameterized and element-wise, so we do not need any
+    // data. This is left to simplify the Layer message.
+}
+
+message HardTanhLayerData {
+    // Hard Tanh layers are unparameterized and element-wise, so we do not need
+    // any data. This is left to simplify the Layer message.
+}
+
+message NormalizeLayerData {
+    // There should be one mean and standard deviation per channel.
+    repeated float means = 1;
+    repeated float standard_deviations = 2;
+}
+
+message ConcatLayerData {
+    // The concat layer logically encompasses all of the layers that feed into
+    // it.
+    repeated Layer layers = 1;
+    enum ConcatAlong {
+        CONCAT_ALONG_INVALID = 0;
+        CONCAT_ALONG_CHANNELS = 1;
+        CONCAT_ALONG_FLAT = 2;
+    }
+    ConcatAlong concat_along = 2;
+}
+
+message ArgMaxLayerData {
+    // ArgMax layers are unparameterized and element-wise, so we do not need
+    // any data. This is left to simplify the Layer message.
+}

@@ -1,0 +1,11 @@
+# Depset rule is for gRPC and Bazel 0.28.1
+build --incompatible_depset_is_not_iterable=false \
+--linkopt="-fopenmp" --linkopt="-lpthread" --linkopt="-m64" \
+--linkopt="-march=native" --linkopt="-O3" \
+--cxxopt="-fopenmp" --cxxopt="-lpthread" --cxxopt="-m64" \
+--cxxopt="-march=native" --cxxopt="-O3" \
+--copt="-fopenmp" --copt="-lpthread" \
+--copt="-march=native" --copt="-O3"  --copt="-m64" \
+--incompatible_disallow_dict_plus=false \
+--incompatible_string_join_requires_strings=false
+# run --run_under="runexec --no-container --walltimelimit 172800 --cores 0-15 --memlimit 17179869184 --output /dev/stdout --input - --"

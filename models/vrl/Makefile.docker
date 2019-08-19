@@ -1,0 +1,19 @@
+SETUP=export PYTHONPATH="/lib/z3/bin:" &&
+
+test_tanh:
+	cp /iovol/DDPG.tanh.py DDPG.py
+	$(SETUP) python benchmarks/pendulum_continuous.py --nn_test --test_episodes=100
+	cp network.npz /iovol/network.npz
+
+test_hardtanh:
+	cp /iovol/DDPG.tanh.py DDPG.py
+	$(SETUP) python benchmarks/pendulum_continuous.py --nn_test --test_episodes=100
+	cp network.npz /iovol/network.npz
+
+savenet:
+	cp /iovol/DDPG.savenet.py DDPG.py
+	$(SETUP) python benchmarks/$(MODEL).py --nn_test --test_episodes=0
+	cp network.npz /iovol/$(MODEL).npz
+
+#retrain_and_test_pendulum:
+#	$(SETUP) python benchmarks/pendulum_continuous.py --nn_test --retrain_nn --test_episodes=5
