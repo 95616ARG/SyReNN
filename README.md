@@ -7,22 +7,34 @@ In particular, this repository contains the code described and utilized in the
 papers:
 
 **"Computing Linear Restrictions of Neural Networks" ([1])**
+Preprint: [https://arxiv.org/abs/1908.06214](https://arxiv.org/abs/1908.06214).
 ```
 @article{sotoudeh:linear_restrictions,
-    Title = {Computing Linear Restrictions of Neural Networks},
-    Author = {Matthew Sotoudeh and Aditya V. Thakur},
-    Year = {2019},
+  author    = {Matthew Sotoudeh and Aditya V. Thakur},
+  title     = {Computing Linear Restrictions of Neural Networks},
+  journal   = {CoRR},
+  volume    = {abs/1908.06214},
+  year      = {2019},
+  url       = {https://arxiv.org/abs/1908.06214},
+  archivePrefix = {arXiv},
+  eprint    = {1908.06214},
 }
 ```
 
 **"A Symbolic Neural Network Representation and its Application to
 Understanding, Verifying, and Patching Networks" ([2])**
+Preprint: [https://arxiv.org/abs/1908.06223](https://arxiv.org/abs/1908.06223).
 ```
 @article{sotoudeh:symbolic_networks,
-    Title = {A Symbolic Neural Network Representation and its Application to
-    Understanding, Verifying, and Patching Networks},
-    Author = {Matthew Sotoudeh and Aditya V. Thakur},
-    Year = {2019},
+  author    = {Matthew Sotoudeh and Aditya V. Thakur},
+  title     = {A Symbolic Neural Network Representation and its Application to
+  Understanding, Verifying, and Patching Networks},
+  journal   = {CoRR},
+  volume    = {abs/1908.06223},
+  year      = {2019},
+  url       = {https://arxiv.org/abs/1908.06223},
+  archivePrefix = {arXiv},
+  eprint    = {1908.06223},
 }
 ```
 
