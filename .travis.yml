@@ -24,7 +24,8 @@ before_install:
   - rm -f install.sh
 
 script:
-  - bazel test //...
+  - bazel test syrenn_server/...
+  - bazel test pysyrenn/...
 
 notifications:
   email: false
