@@ -29,8 +29,16 @@ cache:
 
 script:
   - echo ".bazel_cache" >> .bazelignore
-  - bazel --output_user_root=.bazel_cache test syrenn_server/...
-  - bazel --output_user_root=.bazel_cache test pysyrenn/...
+  - bazel --output_user_root=.bazel_cache test --cache_test_results=no syrenn_server/...
+  - bazel --output_user_root=.bazel_cache test --cache_test_results=no pysyrenn/...
+
+before_cache:
+  - rm -rf .bazel_cache/*/execroot/*/bazel-out/*/bin/syrenn_server
+  - rm -rf .bazel_cache/*/execroot/*/bazel-out/*/bin/syrenn_proto
+  - rm -rf .bazel_cache/*/execroot/*/bazel-out/*/bin/pysyrenn
+  - rm -f .bazel_cache/*/execroot/*/syrenn_proto
+  - rm -f .bazel_cache/*/execroot/*/syrenn_server
+  - rm -f .bazel_cache/*/execroot/*/pysyrenn
 
 notifications:
   email: false
