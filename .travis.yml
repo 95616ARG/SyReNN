@@ -23,9 +23,13 @@ before_install:
   - ./install.sh --user
   - rm -f install.sh
 
+cache:
+  directories:
+    - /bazel_cache
+
 script:
-  - bazel test syrenn_server/...
-  - bazel test pysyrenn/...
+  - bazel --output_user_root=/bazel_cache test syrenn_server/...
+  - bazel --output_user_root=/bazel_cache test pysyrenn/...
 
 notifications:
   email: false
