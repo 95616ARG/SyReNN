@@ -25,11 +25,12 @@ before_install:
 
 cache:
   directories:
-    - /bazel_cache
+    - .bazel_cache
 
 script:
-  - bazel --output_user_root=/bazel_cache test syrenn_server/...
-  - bazel --output_user_root=/bazel_cache test pysyrenn/...
+  - echo ".bazel_cache" >> .bazelignore
+  - bazel --output_user_root=.bazel_cache test syrenn_server/...
+  - bazel --output_user_root=.bazel_cache test pysyrenn/...
 
 notifications:
   email: false
