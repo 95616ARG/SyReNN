@@ -8,7 +8,7 @@ domain as it provides the necessary representation for precondition
 computation. Other domains may be implemented in the future.
 
 # Building & Running
-1. Install Bazel 0.28.1, Docker (tested with version 18.09.6, build 481bc77),
+1. Install Bazel 1.1.0, Docker (tested with version 18.09.6, build 481bc77),
    and any prerequisites mentioned in [../../README.md](../../README.md).
 2. Ensure that the ``runexec`` line in [../../.bazelrc](../../.bazelrc) is
    commented out (we run ``runexec`` directly in the Docker containers).

@@ -1,6 +1,10 @@
 genrule(
     name = "build_reluplex_docker",
-    srcs = ["Dockerfile", "bmc.cpp", "Makefile"],
+    srcs = [
+        "Dockerfile",
+        "bmc.cpp",
+        "Makefile",
+    ],
     outs = ["reluplex_bmc.tgz"],
     cmd = """
     cp $(location Dockerfile) Dockerfile
@@ -29,10 +33,10 @@ genrule(
     cp specs.tgz $@
     """,
     tools = [
-        "@python_3//:installdir",
-        "//:pywrapper",
         "//:pip_packages",
+        "//:pywrapper",
         "//experiments:vrl_model",
+        "@python_3//:installdir",
     ],
     visibility = ["//:__subpackages__"],
 )

@@ -9,7 +9,8 @@ ARG UID=1000
 # Bazel, build dependencies, benchexec dependencies, and docker-in-docker
 # dependencies.
 RUN apt-get update && apt-get install -y \
-    pkg-config zip g++ zlib1g-dev unzip python2.7 python-pip python3 \
+    pkg-config zip g++ zlib1g-dev unzip \
+    python2.7 python-pip python3 python3-pip \
     build-essential curl git cmake libcairo2 libffi-dev libgmp3-dev \
     zlib1g-dev zip \
     apt-transport-https ca-certificates gnupg-agent software-properties-common
@@ -24,13 +25,15 @@ RUN apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Install Bazel.
 WORKDIR /
-RUN curl -OL https://github.com/bazelbuild/bazel/releases/download/0.28.1/bazel-0.28.1-installer-linux-x86_64.sh
-RUN chmod +x bazel-0.28.1-installer-linux-x86_64.sh
-RUN ./bazel-0.28.1-installer-linux-x86_64.sh
+RUN curl -OL https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
+    chmod +x bazel-1.1.0-installer-linux-x86_64.sh && \
+    ./bazel-1.1.0-installer-linux-x86_64.sh && \
+    rm bazel-1.1.0-installer-linux-x86_64.sh
 
 # Install benchexec.
-RUN curl -OL https://github.com/sosy-lab/benchexec/releases/download/2.0/benchexec_2.0-1_all.deb
-RUN apt install -y --install-recommends ./benchexec_2.0-1_all.deb
+RUN curl -OL https://github.com/sosy-lab/benchexec/releases/download/2.2/benchexec_2.2-1_all.deb && \
+    apt install -y --install-recommends ./benchexec_2.2-1_all.deb && \
+    rm benchexec_2.2-1_all.deb
 
 RUN rm -rf /var/lib/apt/lists/*
 

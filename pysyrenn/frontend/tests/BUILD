@@ -1,8 +1,8 @@
 py_library(
     name = "helpers",
     srcs = ["helpers.py"],
-    deps = ["//:pip-packages"],
     visibility = ["//:__subpackages__"],
+    deps = ["//:pip-packages"],
 )
 
 py_test(
@@ -10,9 +10,9 @@ py_test(
     size = "small",
     srcs = ["relu_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:relu_layer",
-        ":helpers",
     ],
 )
 
@@ -21,9 +21,9 @@ py_test(
     size = "small",
     srcs = ["hard_tanh_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:hard_tanh_layer",
-        ":helpers",
     ],
 )
 
@@ -32,9 +32,9 @@ py_test(
     size = "small",
     srcs = ["argmax_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:argmax_layer",
-        ":helpers",
     ],
 )
 
@@ -43,9 +43,9 @@ py_test(
     size = "small",
     srcs = ["fullyconnected_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:fullyconnected_layer",
-        ":helpers",
     ],
 )
 
@@ -54,9 +54,9 @@ py_test(
     size = "small",
     srcs = ["normalize_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:normalize_layer",
-        ":helpers",
     ],
 )
 
@@ -65,10 +65,10 @@ py_test(
     size = "small",
     srcs = ["averagepool_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:averagepool_layer",
         "//pysyrenn/frontend:strided_window_data",
-        ":helpers",
     ],
 )
 
@@ -77,10 +77,10 @@ py_test(
     size = "small",
     srcs = ["maxpool_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:maxpool_layer",
         "//pysyrenn/frontend:strided_window_data",
-        ":helpers",
     ],
 )
 
@@ -89,10 +89,10 @@ py_test(
     size = "small",
     srcs = ["conv2d_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:conv2d_layer",
         "//pysyrenn/frontend:strided_window_data",
-        ":helpers",
     ],
 )
 
@@ -101,14 +101,14 @@ py_test(
     size = "small",
     srcs = ["concat_layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
+        "//pysyrenn/frontend:averagepool_layer",
         "//pysyrenn/frontend:concat_layer",
+        "//pysyrenn/frontend:conv2d_layer",
         "//pysyrenn/frontend:fullyconnected_layer",
         "//pysyrenn/frontend:normalize_layer",
         "//pysyrenn/frontend:strided_window_data",
-        "//pysyrenn/frontend:averagepool_layer",
-        "//pysyrenn/frontend:conv2d_layer",
-        ":helpers",
     ],
 )
 
@@ -117,9 +117,9 @@ py_test(
     size = "small",
     srcs = ["strided_window_data.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:strided_window_data",
-        ":helpers",
     ],
 )
 
@@ -127,19 +127,16 @@ py_test(
     name = "network",
     size = "medium",
     srcs = ["network.py"],
+    data = ["@onnx_squeezenet//:all"],
     deps = [
-        "//:pip-packages",
-        "//pysyrenn/frontend:fullyconnected_layer",
-        "//pysyrenn/frontend:relu_layer",
-        "//pysyrenn/frontend:argmax_layer",
-        "//pysyrenn/frontend:network",
-        "//pysyrenn/frontend:transformer_client",
         ":helpers",
+        "//:pip-packages",
+        "//pysyrenn/frontend:argmax_layer",
+        "//pysyrenn/frontend:fullyconnected_layer",
+        "//pysyrenn/frontend:network",
+        "//pysyrenn/frontend:relu_layer",
+        "//pysyrenn/frontend:transformer_client",
     ],
-    data = [
-        "@onnx_squeezenet//:all",
-        "@onnx_vgg16//:all",
-    ]
 )
 
 py_test(
@@ -147,9 +144,9 @@ py_test(
     size = "small",
     srcs = ["layer.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:layer",
-        ":helpers",
     ],
 )
 
@@ -158,11 +155,11 @@ py_test(
     size = "small",
     srcs = ["transformer_client.py"],
     deps = [
+        ":helpers",
         "//:pip-packages",
         "//pysyrenn/frontend:fullyconnected_layer",
-        "//pysyrenn/frontend:relu_layer",
         "//pysyrenn/frontend:network",
+        "//pysyrenn/frontend:relu_layer",
         "//pysyrenn/frontend:transformer_client",
-        ":helpers",
     ],
 )

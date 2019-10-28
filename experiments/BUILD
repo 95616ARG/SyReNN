@@ -2,13 +2,13 @@ py_library(
     name = "experiment",
     srcs = ["experiment.py"],
     data = [
-        "//models:models",
+        "//models",
         "//models:datasets",
     ],
     deps = [
         "//:pip-packages",
-        "//syrenn_proto:syrenn_py_proto",
-        "//pysyrenn:pysyrenn",
+        "//pysyrenn",
+        "//syrenn_proto:syrenn_py_grpc",
     ],
 )
 
@@ -26,26 +26,33 @@ filegroup(
     visibility = ["//:__subpackages__"],
 )
 
+py_library(
+    name = "integral_approximations",
+    srcs = ["integral_approximations.py"],
+    deps = ["//:pip-packages"],
+)
+
 py_binary(
     name = "integrated_gradients",
     srcs = ["integrated_gradients.py"],
     deps = [
-        "//:pip-packages",
         ":experiment",
-        "//pysyrenn:pysyrenn",
+        ":integral_approximations",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
 )
 
 py_binary(
     name = "acas_lines",
     srcs = ["acas_lines.py"],
-    deps = [
-        "//:pip-packages",
-        ":experiment",
-        "//pysyrenn:pysyrenn",
-    ],
     data = [
         "//:plane.png",
+    ],
+    deps = [
+        ":experiment",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
 )
 
@@ -53,53 +60,53 @@ py_binary(
     name = "linearity_hypothesis",
     srcs = ["linearity_hypothesis.py"],
     deps = [
-        "//:pip-packages",
         ":experiment",
-        "//pysyrenn:pysyrenn",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
 )
 
 py_binary(
     name = "acas_planes",
     srcs = ["acas_planes.py"],
-    deps = [
-        "//:pip-packages",
-        "//pysyrenn:pysyrenn",
-        ":acas_lines",
-        ":polar_image",
-    ],
     data = [
         "//:plane.png",
+    ],
+    deps = [
+        ":acas_lines",
+        ":polar_image",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
 )
 
 py_library(
     name = "vrl_model",
     srcs = ["vrl_model.py"],
-    deps = ["//:pip-packages"],
     visibility = ["//:__subpackages__"],
+    deps = ["//:pip-packages"],
 )
 
 py_binary(
     name = "model_checking",
     srcs = ["model_checking.py"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        "//:pip-packages",
-        "//pysyrenn:pysyrenn",
         ":experiment",
         ":vrl_model",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
-    visibility = ["//:__subpackages__"],
 )
 
 py_binary(
     name = "netpatch",
     srcs = ["netpatch.py"],
     deps = [
-        "//:pip-packages",
-        "//pysyrenn:pysyrenn",
         ":acas_planes",
         ":polar_image",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
 )
 
@@ -107,8 +114,8 @@ py_binary(
     name = "toy_examples",
     srcs = ["toy_examples.py"],
     deps = [
-        "//:pip-packages",
         ":acas_planes",
-        "//pysyrenn:pysyrenn",
+        "//:pip-packages",
+        "//pysyrenn",
     ],
 )

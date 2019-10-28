@@ -1,69 +1,69 @@
 py_library(
     name = "helpers",
     srcs = ["__init__.py"],
+    visibility = ["//:__subpackages__"],
     deps = [
-        ":integrated_gradients",
         ":classify_lines",
         ":classify_planes",
-        ":netpatch",
+        ":integrated_gradients",
         ":masking_network",
+        ":netpatch",
     ],
-    visibility = ["//:__subpackages__"],
 )
 
 py_library(
     name = "integrated_gradients",
     srcs = ["integrated_gradients.py"],
+    visibility = [":__subpackages__"],
     deps = [
         "//:pip-packages",
     ],
-    visibility = [":__subpackages__"],
 )
 
 py_library(
     name = "classify_lines",
     srcs = ["classify_lines.py"],
+    visibility = [":__subpackages__"],
     deps = [
         "//:pip-packages",
-        "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:argmax_layer",
+        "//pysyrenn/frontend:network",
     ],
-    visibility = [":__subpackages__"],
 )
 
 py_library(
     name = "classify_planes",
     srcs = ["classify_planes.py"],
+    visibility = [":__subpackages__"],
     deps = [
         "//:pip-packages",
-        "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:argmax_layer",
+        "//pysyrenn/frontend:network",
     ],
-    visibility = [":__subpackages__"],
 )
 
 py_library(
     name = "netpatch",
     srcs = ["netpatch.py"],
-    deps = [
-        "//:pip-packages",
-        "//pysyrenn/frontend:network",
-        "//pysyrenn/frontend:fullyconnected_layer",
-        "//pysyrenn/frontend:relu_layer",
-        ":masking_network",
-    ],
     visibility = [":__subpackages__"],
+    deps = [
+        ":masking_network",
+        "//:pip-packages",
+        "//pysyrenn/frontend:fullyconnected_layer",
+        "//pysyrenn/frontend:network",
+        "//pysyrenn/frontend:relu_layer",
+    ],
 )
 
 py_library(
     name = "masking_network",
     srcs = ["masking_network.py"],
+    visibility = [":__subpackages__"],
     deps = [
         "//:pip-packages",
-        "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:fullyconnected_layer",
+        "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:relu_layer",
-        "//syrenn_proto:syrenn_py_proto",
+        "//syrenn_proto:syrenn_py_grpc",
     ],
-    visibility = [":__subpackages__"],
 )

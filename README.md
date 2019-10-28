@@ -80,7 +80,7 @@ is already freezing/running out of memory, consider removing the existing
 ``-j#`` flags from ``external/*.BUILD``.
 
 #### Local Builds
-You must install [Bazel](https://bazel.build/) 0.28.1 and have binaries for
+You must install [Bazel](https://bazel.build/) 1.1.0 and have binaries for
 building arbitrary C++ packages (eg. ``build-essential`` for Ubuntu).
 Furthermore, the ``libcairo2``, ``libffi-dev``, ``zlib1g-dev``, ``zip``, and
 ``libgmp3-dev`` packages are required for the Python code (but usually come

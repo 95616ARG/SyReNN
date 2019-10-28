@@ -2,7 +2,11 @@
 genrule(
     name = "build_tbb",
     srcs = glob(["**/**"]) + [
-        "@local_config_cc//:toolchain"
+        "@local_config_cc//:toolchain",
+    ],
+    outs = [
+        "libtbb.a",
+        "libtbbmalloc.a",
     ],
     cmd = """
          DEST_DIR=$$PWD/$(@D)
@@ -21,20 +25,19 @@ genrule(
          # echo cp build/build_{release,debug}/*.a $$DEST_DIR
          cp build/build_{release,debug}/*.a $$DEST_DIR
     """,
-    outs = [
-        "libtbb.a",
-        "libtbbmalloc.a",
-    ]
 )
 
 cc_library(
     name = "tbb",
+    srcs = [
+        "libtbb.a",
+        ":build_tbb",
+    ],
     hdrs = glob([
         "include/serial/**",
         "include/tbb/**/**",
     ]),
-    srcs = ["libtbb.a", ":build_tbb"],
     includes = ["include"],
-    visibility = ["//visibility:public"],
     linkstatic = 1,
+    visibility = ["//visibility:public"],
 )

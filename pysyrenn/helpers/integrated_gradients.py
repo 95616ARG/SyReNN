@@ -1,11 +1,12 @@
 """Methods using ExactLine to exactly compute Integrated Gradients.
 """
 import numpy as np
+import gc
 
 class IntegratedGradients:
     """Class to orchestrate computation of Integrated Gradients.
     """
-    def __init__(self, network, lines, batch_size=4096):
+    def __init__(self, network, lines, batch_size=1024):
         """Initializes a new Integrated Gradients computer class.
 
         @batch_size is the maximum number of points to compute gradients for at
@@ -58,7 +59,10 @@ class IntegratedGradients:
                                                            label)
                 for i, region_gradient in enumerate(gradients):
                     region_start, region_end = batch_endpoints[i:(i + 2)]
-                    region_size = (region_end - region_start) * delta
+                    region_size = region_end - region_start
                     attributions += region_size * region_gradient
+                del gradients
+                gc.collect()
+            attributions *= delta
             self.attributions[label].append(attributions)
         return self.attributions[label]

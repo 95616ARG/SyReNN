@@ -78,7 +78,7 @@ class Network:
                                     requires_grad=True)
         output = torch.sum(self.compute(input_tensor)[:, label])
         output.backward()
-        return input_tensor.grad.numpy()
+        return input_tensor.grad.detach().numpy()
 
     def serialize(self):
         """Serializes the network into the Protobuf format.

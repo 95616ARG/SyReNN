@@ -1,7 +1,7 @@
 filegroup(
     name = "vrl_models",
     srcs = glob([
-        "vrl/eran/*.eran"
+        "vrl/eran/*.eran",
     ]),
     visibility = ["//:__subpackages__"],
 )
@@ -9,21 +9,21 @@ filegroup(
 filegroup(
     name = "models",
     srcs = [
-        "@mnist_relu_3_100_model//file",
-        "@mnist_relu_4_1024_model//file",
-        "@mnist_relu_convsmall_model//file",
-        "@mnist_relu_convsmall_diffai_model//file",
-        "@mnist_relu_convsmall_pgd_model//file",
-        "@mnist_relu_convmedium_model//file",
-        "@cifar10_relu_4_100_model//file",
-        "@cifar10_relu_9_200_model//file",
-        "@cifar10_relu_convsmall_model//file",
-        "@cifar10_relu_convsmall_diffai_model//file",
-        "@cifar10_relu_convsmall_pgd_model//file",
-        "@cifar10_relu_convmedium_model//file",
-        "@cifar10_relu_convbig_diffai_model//file",
         ":acas_models",
         ":vrl_models",
+        "@cifar10_relu_4_100_model//file",
+        "@cifar10_relu_9_200_model//file",
+        "@cifar10_relu_convbig_diffai_model//file",
+        "@cifar10_relu_convmedium_model//file",
+        "@cifar10_relu_convsmall_diffai_model//file",
+        "@cifar10_relu_convsmall_model//file",
+        "@cifar10_relu_convsmall_pgd_model//file",
+        "@mnist_relu_3_100_model//file",
+        "@mnist_relu_4_1024_model//file",
+        "@mnist_relu_convmedium_model//file",
+        "@mnist_relu_convsmall_diffai_model//file",
+        "@mnist_relu_convsmall_model//file",
+        "@mnist_relu_convsmall_pgd_model//file",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -31,8 +31,8 @@ filegroup(
 filegroup(
     name = "datasets",
     srcs = [
-        "@mnist_test_data//file",
         "@cifar10_test_data//file",
+        "@mnist_test_data//file",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -40,7 +40,10 @@ filegroup(
 # Downloads ACAS Xu models and translates them into the ERAN model format.
 genrule(
     name = "translate-acas-models",
-    srcs = ["@reluplex//:all", "translate_acas_model.py"],
+    srcs = [
+        "@reluplex//:all",
+        "translate_acas_model.py",
+    ],
     outs = ["acas_models"],
     cmd = """
     PYTHON=$(location //:pywrapper)
@@ -59,9 +62,9 @@ genrule(
     mv acas_models $@
     """,
     tools = [
-        "@python_3//:installdir",
         "//:pip_packages",
         "//:pywrapper",
+        "@python_3//:installdir",
     ],
     visibility = ["//:__subpackages__"],
 )

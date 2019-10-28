@@ -11,13 +11,17 @@ cmake_external(
     cache_entries = {
         # MKL-DNN's source throws set-but-not-used warnings with -Werror,
         # setting this turns those off
-        "MKLDNN_PRODUCT_BUILD_MODE" : "OFF",
-        "WITH_TEST" : "OFF",
-        "WITH_EXAMPLE" : "OFF",
+        "MKLDNN_PRODUCT_BUILD_MODE": "OFF",
+        "WITH_TEST": "OFF",
+        "WITH_EXAMPLE": "OFF",
     },
-    alwayslink = True,
     lib_source = "all",
-    make_commands = ["make -j8", "make install", "ls"],
+    make_commands = [
+        "make -j8",
+        "make install",
+        "ls",
+    ],
     shared_libraries = ["libmkldnn.so.1"],
     visibility = ["//visibility:public"],
+    alwayslink = True,
 )

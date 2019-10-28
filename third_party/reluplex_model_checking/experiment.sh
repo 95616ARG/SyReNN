@@ -17,7 +17,6 @@ function run_for_model {
     # spec.  NOTE: This should be greater than the desired experiment timeout,
     # as there is overhead in starting the scripts.
     sh_timeout=$((90*60))
-    sh_timeout=10
     # https://stackoverflow.com/questions/17066250
     SECONDS=0
     net_file="$model/stepnet.nnet"

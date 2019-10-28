@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build and test the C++ SyReNN server.
       run: |
-        V=0.28.1
+        V=1.1.0
         OS=linux
         ARCH=x86_64
         GH_BASE="https://github.com/bazelbuild/bazel/releases/download/$V"
@@ -30,7 +30,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build and test the Python SyReNN frontend (PySyReNN), skipping one resource-intensive test and a few that rely on the server to be running.
       run: |
-        V=0.28.1
+        V=1.1.0
         OS=linux
         ARCH=x86_64
         GH_BASE="https://github.com/bazelbuild/bazel/releases/download/$V"

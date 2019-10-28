@@ -50,7 +50,7 @@ with open("requirements.txt") as requirements:
         elif line.startswith("#"):
             pass
         elif reading:
-            INSTALL_REQUIRES.append(line.strip())
+            INSTALL_REQUIRES.append(line.strip().split("==")[0])
 
 ###################################################################
 

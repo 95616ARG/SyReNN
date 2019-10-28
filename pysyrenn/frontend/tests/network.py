@@ -229,19 +229,4 @@ def test_squeezenet_from_onnx():
     network = Network.from_file("external/onnx_squeezenet/squeezenet1.1.onnx")
     assert len(network.layers) == 40
 
-def test_vgg_from_onnx():
-    """Tests loading a VGG Network from ONNX format.
-
-    Note that this is a very large network, so we only load it if the user has
-    >= 12 GB of memory to avoid freezing.
-    """
-    # https://stackoverflow.com/questions/22102999
-    import os
-    mem_bytes = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES")
-    if mem_bytes < (12 * (1024**3)):
-        pytest.skip("Not enough memory.")
-        return
-    network = Network.from_file("external/onnx_vgg16/vgg16.onnx")
-    assert len(network.layers) == 36
-
 main(__name__, __file__)

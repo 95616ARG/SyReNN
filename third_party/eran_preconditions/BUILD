@@ -1,6 +1,10 @@
 genrule(
     name = "build_eran_docker",
-    srcs = ["Dockerfile", "install.sh", "//:plane.png"],
+    srcs = [
+        "Dockerfile",
+        "install.sh",
+        "//:plane.png",
+    ],
     outs = ["eran_preconditions.tgz"],
     cmd = """
     cp $(location //:plane.png) plane.png

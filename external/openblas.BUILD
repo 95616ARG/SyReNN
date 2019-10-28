@@ -15,9 +15,11 @@ cmake_external(
         "USE_OPENMP": "1",
     },
     lib_source = "all",
-    make_commands = ["make -j4", "make install"],
-    alwayslink = True,
     linkopts = ["-lpthread"],
+    make_commands = [
+        "make -j4",
+        "make install",
+    ],
 
     # We are selecting the resulting static library to be passed in C/C++ provider
     # as the result of the build;
@@ -25,4 +27,5 @@ cmake_external(
     # according to their CMake script
     static_libraries = ["libopenblas.a"],
     visibility = ["//visibility:public"],
+    alwayslink = True,
 )

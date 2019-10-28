@@ -53,6 +53,7 @@ toolchain(
 genrule(
     name = "install-pip-packages",
     srcs = ["requirements.txt"],
+    outs = ["pip_packages"],
     cmd = """
     PYTHON=$(location pywrapper.sh)
     PIP="$$PYTHON -m pip"
@@ -80,15 +81,17 @@ genrule(
 
     rm -rf $$DUMMY_HOME
     """,
-    outs = ["pip_packages"],
-    tools = ["@python_3//:installdir", ":pywrapper.sh"],
+    tools = [
+        ":pywrapper.sh",
+        "@python_3//:installdir",
+    ],
     visibility = ["//:__subpackages__"],
 )
 
 py_library(
     name = "pip-packages",
-    data = [":install-pip-packages"],
     srcs = ["._dummy_.py"],
+    data = [":install-pip-packages"],
     imports = ["pip_packages"],
     visibility = ["//:__subpackages__"],
 )
@@ -96,7 +99,10 @@ py_library(
 # Make the thicker-bordered plane SVG.
 genrule(
     name = "thicker-plane",
-    srcs = ["@plane_svg//file", "pywrapper.sh"],
+    srcs = [
+        "@plane_svg//file",
+        "pywrapper.sh",
+    ],
     outs = ["plane.png"],
     cmd = """
     PLANESVG=$(location @plane_svg//file)
@@ -111,8 +117,8 @@ genrule(
     cp plane.png $@
     """,
     tools = [
-        "@python_3//:installdir",
         "//:pip_packages",
+        "@python_3//:installdir",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -122,9 +128,9 @@ sh_binary(
     name = "coverage_report",
     srcs = ["coverage_report.sh"],
     data = [
-        "@python_3//:installdir",
         "//:pip_packages",
-        "//:pywrapper"
+        "//:pywrapper",
+        "@python_3//:installdir",
     ],
 )
 
@@ -148,6 +154,7 @@ genrule(
     export PYTHONPATH=$$PWD:$(location //:pip_packages)
 
     mkdir -p syrenn_proto
+    cp -Lr $(locations //syrenn_proto:syrenn_py_grpc) syrenn_proto
     cp -Lr $(locations //syrenn_proto:syrenn_py_proto) syrenn_proto
     touch syrenn_proto/__init__.py
     cp pip_info/* .
@@ -156,9 +163,10 @@ genrule(
     cp -r dist $@
     """,
     tools = [
-        "@python_3//:installdir",
         "pywrapper",
         "//:pip_packages",
+        "//syrenn_proto:syrenn_py_grpc",
         "//syrenn_proto:syrenn_py_proto",
+        "@python_3//:installdir",
     ],
 )
