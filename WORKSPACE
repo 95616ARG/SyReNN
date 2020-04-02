@@ -69,9 +69,9 @@ http_archive(
 http_archive(
     name = "tbb",
     build_file = "tbb.BUILD",
-    sha256 = "7b1fd8caea14be72ae4175896510bf99c809cd7031306a1917565e6de7382fba",
-    strip_prefix = "tbb-2019_U8",
-    urls = ["https://github.com/intel/tbb/archive/2019_U8.tar.gz"],
+    sha256 = "6b540118cbc79f9cbc06a35033c18156c21b84ab7b6cf56d773b168ad2b68566",
+    strip_prefix = "oneTBB-2019_U8",
+    urls = ["https://github.com/oneapi-src/oneTBB/archive/2019_U8.tar.gz"],
 )
 
 # GOOGLETEST
