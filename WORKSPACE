@@ -61,9 +61,9 @@ http_archive(
 http_archive(
     name = "mkldnn",
     build_file = "mkldnn.BUILD",
-    sha256 = "91fb84601c18f8a5a87eccd7b63d61f03495f36c5c533bd7f59443e4f8bb2595",
-    strip_prefix = "mkl-dnn-1.0.1",
-    urls = ["https://github.com/intel/mkl-dnn/archive/v1.0.1.tar.gz"],
+    sha256 = "8fee2324267811204c1f877a1dea70b23ab3d5f4c3ea0198d81f0921aa70d76e",
+    strip_prefix = "oneDNN-1.0.1",
+    urls = ["https://github.com/oneapi-src/oneDNN/archive/v1.0.1.tar.gz"],
 )
 
 http_archive(
