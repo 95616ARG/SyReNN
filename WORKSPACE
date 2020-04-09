@@ -9,7 +9,7 @@ http_archive(
     build_file = "openssl.BUILD",
     sha256 = "cabd5c9492825ce5bd23f3c3aeed6a97f8142f606d893df216411f07d1abab96",
     strip_prefix = "openssl-1.0.2s",
-    urls = ["https://www.openssl.org/source/openssl-1.0.2s.tar.gz"],
+    urls = ["https://www.openssl.org/source/old/1.0.2/openssl-1.0.2s.tar.gz"],
 )
 
 http_archive(
@@ -166,13 +166,6 @@ http_file(
     downloaded_file_path = "model.eran",
     sha256 = "88c414a0f69a3469731c45bc14d9583cb8189fbbbab003ca70d818a041a31103",
     urls = ["https://files.sri.inf.ethz.ch/eran/nets/pytorch/mnist/convMedGRELU__Point.pyt"],
-)
-
-http_file(
-    name = "mnist_relu_convmedium_diffai_model",
-    downloaded_file_path = "model.eran",
-    sha256 = "",
-    urls = ["https://files.sri.inf.ethz.ch/eran/nets/pytorch/mnist/convMedGRELU__DiffAI.pyt"],
 )
 
 http_file(
