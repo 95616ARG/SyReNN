@@ -9,7 +9,7 @@ http_archive(
     build_file = "openssl.BUILD",
     sha256 = "cabd5c9492825ce5bd23f3c3aeed6a97f8142f606d893df216411f07d1abab96",
     strip_prefix = "openssl-1.0.2s",
-    urls = ["https://www.openssl.org/source/openssl-1.0.2s.tar.gz"],
+    urls = ["https://www.openssl.org/source/old/1.0.2/openssl-1.0.2s.tar.gz"],
 )
 
 http_archive(
@@ -61,9 +61,9 @@ http_archive(
 http_archive(
     name = "mkldnn",
     build_file = "mkldnn.BUILD",
-    sha256 = "91fb84601c18f8a5a87eccd7b63d61f03495f36c5c533bd7f59443e4f8bb2595",
-    strip_prefix = "mkl-dnn-1.0.1",
-    urls = ["https://github.com/intel/mkl-dnn/archive/v1.0.1.tar.gz"],
+    sha256 = "8fee2324267811204c1f877a1dea70b23ab3d5f4c3ea0198d81f0921aa70d76e",
+    strip_prefix = "oneDNN-1.0.1",
+    urls = ["https://github.com/oneapi-src/oneDNN/archive/v1.0.1.tar.gz"],
 )
 
 http_archive(
@@ -166,13 +166,6 @@ http_file(
     downloaded_file_path = "model.eran",
     sha256 = "88c414a0f69a3469731c45bc14d9583cb8189fbbbab003ca70d818a041a31103",
     urls = ["https://files.sri.inf.ethz.ch/eran/nets/pytorch/mnist/convMedGRELU__Point.pyt"],
-)
-
-http_file(
-    name = "mnist_relu_convmedium_diffai_model",
-    downloaded_file_path = "model.eran",
-    sha256 = "",
-    urls = ["https://files.sri.inf.ethz.ch/eran/nets/pytorch/mnist/convMedGRELU__DiffAI.pyt"],
 )
 
 http_file(

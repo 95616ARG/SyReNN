@@ -7,23 +7,31 @@ In particular, this repository contains the code described and utilized in the
 papers:
 
 **"Computing Linear Restrictions of Neural Networks" ([1])**
-Preprint: [https://arxiv.org/abs/1908.06214](https://arxiv.org/abs/1908.06214).
+
+[Conference on Neural Information Processing Systems (NeurIPS)
+2019](https://neurips.cc/Conferences/2019)
+
+Links:
+[Paper](https://papers.nips.cc/paper/9562-computing-linear-restrictions-of-neural-networks),
+[Slides](https://zenodo.org/record/3520104),
+[Poster](https://zenodo.org/record/3520102)
 ```
-@article{sotoudeh:linear_restrictions,
-  author    = {Matthew Sotoudeh and Aditya V. Thakur},
-  title     = {Computing Linear Restrictions of Neural Networks},
-  journal   = {CoRR},
-  volume    = {abs/1908.06214},
-  year      = {2019},
-  url       = {https://arxiv.org/abs/1908.06214},
-  archivePrefix = {arXiv},
-  eprint    = {1908.06214},
+@incollection{sotoudeh:linear_restrictions,
+  title = {Computing Linear Restrictions of Neural Networks},
+  author = {Sotoudeh, Matthew and Thakur, Aditya V},
+  booktitle = {Advances in Neural Information Processing Systems 32},
+  editor = {H. Wallach and H. Larochelle and A. Beygelzimer and F. d\textquotesingle Alch\'{e}-Buc and E. Fox and R. Garnett},
+  pages = {14132--14143},
+  year = {2019},
+  publisher = {Curran Associates, Inc.},
+  url = {http://papers.nips.cc/paper/9562-computing-linear-restrictions-of-neural-networks.pdf}
 }
 ```
 
 **"A Symbolic Neural Network Representation and its Application to
 Understanding, Verifying, and Patching Networks" ([2])**
-Preprint: [https://arxiv.org/abs/1908.06223](https://arxiv.org/abs/1908.06223).
+
+Links: [Preprint](https://arxiv.org/abs/1908.06223)
 ```
 @article{sotoudeh:symbolic_networks,
   author    = {Matthew Sotoudeh and Aditya V. Thakur},
@@ -38,8 +46,23 @@ Preprint: [https://arxiv.org/abs/1908.06223](https://arxiv.org/abs/1908.06223).
 }
 ```
 
-We will refer to these as ``[1]`` and ``[2]`` respectively in comments and
-code.
+**"Correcting Deep Neural Networks with Small, Generalizing Patches ([3])**
+
+[NeurIPS 2019 Workshop on Safety and Robustness in Decision
+Making](https://sites.google.com/view/neurips19-safe-robust-workshop)
+
+Links: [Paper](https://drive.google.com/file/d/0B3mY6u_lryzdNTFaZnkzUzhuRDNnZG9rdDV5aDA2WFpBOWhN/view)
+```
+@inproceedings{sotoudeh:correcting_dnns_srdm19,
+  title={Correcting Deep Neural Networks with Small, Generalizing Patches},
+  author={Sotoudeh, Matthew and Thakur, Aditya V},
+  booktitle={NeurIPS 2019 Workshop on Safety and Robustness in Decision Making},
+  year={2019}
+}
+```
+
+We will refer to these as ``[1]``, ``[2]``, and ``[3]`` respectively in
+comments and code.
 
 ## Notation and Naming
 In the papers, we often use mathematical notation that can be hard/impossible
