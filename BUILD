@@ -60,25 +60,31 @@ genrule(
 
     DUMMY_HOME=/tmp/$$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)
     rm -rf $$DUMMY_HOME
-    export HOME=$$DUMMY_HOME
 
+    export HOME=$$DUMMY_HOME
     PIP_INSTALL="$$PIP \
         install --no-cache-dir --disable-pip-version-check \
         --target=$@"
 
-    # Install the correct version of Torch
+    # Setup the environment to point to the right Python installation.
     mkdir -p $$DUMMY_HOME
+    INSTALLDIR=$$PWD/$$(find **/** -name "installdir" | head -n 1)
+    export LD_LIBRARY_PATH=$$INSTALLDIR/lib/:$$INSTALLDIR/lib64/
+    ln -s $$INSTALLDIR/python3.7 $$DUMMY_HOME/python
+    export PYTHONPATH=$$PWD/$@
+    export PATH=$$DUMMY_HOME:$$PATH
+
+    # Install the correct version of Torch
     $$PIP_INSTALL torch==1.2.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
     # Install the other requirements.
-    mkdir -p $$DUMMY_HOME
+    $$PIP_INSTALL --upgrade setuptools
     $$PIP_INSTALL -r requirements.txt
 
     # The custom typing package installed as a dependency doesn't seem to work
     # well.
     rm -rf $@/typing-*
     rm -rf $@/typing.py
-
     rm -rf $$DUMMY_HOME
     """,
     tools = [
