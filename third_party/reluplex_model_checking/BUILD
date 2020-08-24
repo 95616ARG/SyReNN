@@ -24,19 +24,18 @@ genrule(
     ],
     outs = ["specs.tgz"],
     cmd = """
-    SCRIPT=$(location export_specs.py)
-    PYTHON=$(location //:pywrapper)
-    export PYTHONPATH=$(location //:pip_packages)
+    PYTHON_VENV=$(location //:bazel_python_venv)
+    pushd $$PYTHON_VENV/..
+    source bazel_python_venv_installed/bin/activate
+    popd
 
-    $$PYTHON $$SCRIPT
+    python3 $(location export_specs.py)
     tar -czvf specs.tgz pendulum_continuous satelite quadcopter
     cp specs.tgz $@
     """,
     tools = [
-        "//:pip_packages",
-        "//:pywrapper",
+        "//:bazel_python_venv",
         "//experiments:vrl_model",
-        "@python_3//:installdir",
     ],
     visibility = ["//:__subpackages__"],
 )

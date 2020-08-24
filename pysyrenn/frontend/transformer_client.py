@@ -5,6 +5,8 @@ these methods.
 """
 import os
 import numpy as np
+import sys
+sys.path = [path for path in sys.path if "/com_github_grpc_grpc/" not in path]
 import grpc
 import syrenn_proto.syrenn_pb2_grpc as grpc_pb
 import syrenn_proto.syrenn_pb2 as transformer_pb

@@ -151,7 +151,10 @@ class Network:
 
         Returns a list of UPolytopes (one per plane in @planes), which are
         themselves lists of either tuples of Numpy arrays (pre, post) or just
-        Numpy arrays pre depending on @include_post.
+        Numpy arrays pre depending on @include_post. Note that
+        @compute_preimages=False still returns (pre, post), except the @pre
+        matrices are *combinations* of the original vertices, not points
+        themselves.
         """
         planes = np.asarray(planes)
         transformed = transformer_client.transform_planes(self, planes)

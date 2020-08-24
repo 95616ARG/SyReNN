@@ -5,7 +5,7 @@ outdir=$builddir/third_party/eran_preconditions
 model="$PWD/models/acas_models/1_1.eran"
 polar_image_py="$PWD/experiments/polar_image.py"
 experiment_py="$PWD/third_party/eran_preconditions/experiment.py"
-image_file="$PWD/third_party/eran_preconditions/eran_preconditions.tgz"
+image_file="$PWD/third_party/eran_preconditions/eran_image.tgz"
 
 # Copy everything to the local directory and load the Docker image.
 cp $model model.eran

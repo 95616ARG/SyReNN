@@ -46,15 +46,17 @@ genrule(
     ],
     outs = ["acas_models"],
     cmd = """
-    PYTHON=$(location //:pywrapper)
-    export PYTHONPATH=$(location //:pip_packages)
+    PYTHON_VENV=$(location //:bazel_python_venv)
+    pushd $$PYTHON_VENV/..
+    source bazel_python_venv_installed/bin/activate
+    popd
 
     cp -L external/reluplex/nnet/*.nnet .
     all_files=$$(ls | grep .nnet)
 
     for file in $$all_files
     do
-        $$PYTHON $(location translate_acas_model.py) $$file
+        python3 $(location translate_acas_model.py) $$file
     done
 
     mkdir acas_models
@@ -62,9 +64,7 @@ genrule(
     mv acas_models $@
     """,
     tools = [
-        "//:pip_packages",
-        "//:pywrapper",
-        "@python_3//:installdir",
+        "//:bazel_python_venv",
     ],
     visibility = ["//:__subpackages__"],
 )

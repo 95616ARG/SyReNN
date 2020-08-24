@@ -3,17 +3,18 @@ genrule(
     srcs = [
         "Dockerfile",
         "install.sh",
-        "//:plane.png",
     ],
-    outs = ["eran_preconditions.tgz"],
+    outs = ["eran_image.tgz"],
     cmd = """
-    cp $(location //:plane.png) plane.png
     cp $(location Dockerfile) Dockerfile
     cp $(location install.sh) install.sh
-    docker build --force-rm -t eran_preconditions .
-    docker save -o eran_preconditions.tgz eran_preconditions
-    cp eran_preconditions.tgz $@
+    docker build --force-rm -t eran_image .
+    docker save -o eran_image.tgz eran_image
+    cp eran_image.tgz $@
     """,
+    visibility = [
+        "//third_party/eran_bmc:__pkg__",
+    ],
 )
 
 sh_binary(
@@ -21,7 +22,8 @@ sh_binary(
     srcs = ["experiment.sh"],
     data = [
         "experiment.py",
-        ":eran_preconditions.tgz",
+        ":eran_image.tgz",
+        "//:plane.png",
         "//experiments:polar_image_only",
         "//models:acas_models",
     ],
