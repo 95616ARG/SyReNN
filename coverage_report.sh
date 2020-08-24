@@ -2,11 +2,7 @@ COVTEMP=$PWD/coverage_tmp
 rm -rf $COVTEMP
 mkdir $COVTEMP
 
-# Make sure we know where to find the Python script, and that it knows where to
-# find its pip packages.
-export INSTALLDIR=$PWD/external/python_3/installdir
-PYTHON=$PWD/pywrapper.sh
-export PYTHONPATH=$PYTHONPATH:$PWD/pip_packages
+source bazel_python_venv_installed/bin/activate
 
 # Go to the main workspace directory and run the coverage-report.
 pushd $BUILD_WORKSPACE_DIRECTORY
@@ -25,8 +21,8 @@ done
 rm -rf .coverage htmlcov
 
 # Then we build a new .coverage as well as export to HTML
-$PYTHON -m coverage combine $COVTEMP/*.cov
-$PYTHON -m coverage html pysyrenn/*/*.py
+python3 -m coverage combine $COVTEMP/*.cov
+python3 -m coverage html pysyrenn/*/*.py
 
 # Remove temporaries and go back to where Bazel started us.
 rm -r $COVTEMP

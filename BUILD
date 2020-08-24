@@ -1,130 +1,37 @@
-sh_library(
-    name = "pywrapper",
-    srcs = ["pywrapper.sh"],
-    visibility = ["//:__subpackages__"],
-)
+load("@bazel_python//:bazel_python.bzl", "bazel_python_interpreter")
 
-# https://stackoverflow.com/questions/47036855
-py_runtime(
-    name = "python-3",
-    files = ["@python_3//:installdir"],
-    interpreter = "pywrapper.sh",
-    python_version = "PY3",
-)
-
-# https://github.com/bazelbuild/rules_python/blob/master/proposals/2019-02-12-design-for-a-python-toolchain.md
-load("@bazel_tools//tools/python:toolchain.bzl", "py_runtime_pair")
-
-constraint_value(
-    name = "python3_constraint",
-    constraint_setting = "@bazel_tools//tools/python:py3_interpreter_path",
-)
-
-platform(
-    name = "python3_platform",
-    constraint_values = [
-        ":python3_constraint",
-    ],
-)
-
-py_runtime_pair(
-    name = "python3_runtime_pair",
-    py3_runtime = ":python-3",
-)
-
-toolchain(
-    name = "python3-toolchain",
-    # Since the Python interpreter is invoked at runtime on the target
-    # platform, there's no need to specify execution platform constraints here.
-    target_compatible_with = [
-        # Make sure this toolchain is only selected for a target platform that
-        # advertises that it has interpreters available under /usr/weirdpath.
-        # ":python3_constraint",
-    ],
-    toolchain = "//:python3_runtime_pair",
-    toolchain_type = "@bazel_tools//tools/python:toolchain_type",
-)
-
-# This seems to be the way Google is doing it now:
-# https://github.com/bazelbuild/rules_python/issues/119
-# See https://github.com/pypa/pip/issues/3826 for why we need the --system flag
-# on the pip call. For newer versions of pip, you may have to add
-# --no-build-isolation.
-genrule(
-    name = "install-pip-packages",
-    srcs = ["requirements.txt"],
-    outs = ["pip_packages"],
-    cmd = """
-    PYTHON=$(location pywrapper.sh)
-    PIP="$$PYTHON -m pip"
-
-    DUMMY_HOME=/tmp/$$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)
-    rm -rf $$DUMMY_HOME
-
-    export HOME=$$DUMMY_HOME
-    PIP_INSTALL="$$PIP \
-        install --no-cache-dir --disable-pip-version-check \
-        --target=$@"
-
-    # Setup the environment to point to the right Python installation.
-    mkdir -p $$DUMMY_HOME
-    INSTALLDIR=$$PWD/$$(find **/** -name "installdir" | head -n 1)
-    export LD_LIBRARY_PATH=$$INSTALLDIR/lib/:$$INSTALLDIR/lib64/
-    ln -s $$INSTALLDIR/python3.7 $$DUMMY_HOME/python
-    export PYTHONPATH=$$PWD/$@
-    export PATH=$$DUMMY_HOME:$$PATH
-
-    # Install the correct version of Torch
-    $$PIP_INSTALL torch==1.2.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
-
-    # Install the other requirements.
-    $$PIP_INSTALL --upgrade setuptools
-    $$PIP_INSTALL -r requirements.txt
-
-    # The custom typing package installed as a dependency doesn't seem to work
-    # well.
-    rm -rf $@/typing-*
-    rm -rf $@/typing.py
-    rm -rf $$DUMMY_HOME
+bazel_python_interpreter(
+    name = "bazel_python_venv",
+    python_version = "3.7.4",
+    requirements_file = "requirements.txt",
+    run_after_pip = """
+        pip3 install torch==1.2.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
     """,
-    tools = [
-        ":pywrapper.sh",
-        "@python_3//:installdir",
-    ],
-    visibility = ["//:__subpackages__"],
-)
-
-py_library(
-    name = "pip-packages",
-    srcs = ["._dummy_.py"],
-    data = [":install-pip-packages"],
-    imports = ["pip_packages"],
     visibility = ["//:__subpackages__"],
 )
 
 # Make the thicker-bordered plane SVG.
 genrule(
     name = "thicker-plane",
-    srcs = [
-        "@plane_svg//file",
-        "pywrapper.sh",
-    ],
+    srcs = ["@plane_svg//file"],
     outs = ["plane.png"],
     cmd = """
     PLANESVG=$(location @plane_svg//file)
-    PYTHON=$(location pywrapper.sh)
-    export PYTHONPATH=$(location //:pip_packages)
+
+    PYTHON_VENV=$(location //:bazel_python_venv)
+    pushd $$PYTHON_VENV/..
+    source bazel_python_venv_installed/bin/activate
+    popd
 
     sed -i -e \
         's/id="path5724" /id="path5724" stroke="white" fill="black" stroke-width="10" /' \
         $$PLANESVG
 
-    $$PYTHON -m cairosvg $$PLANESVG -o plane.png --output-width 4965
+    python3 -m cairosvg $$PLANESVG -o plane.png --output-width 4965
     cp plane.png $@
     """,
     tools = [
-        "//:pip_packages",
-        "@python_3//:installdir",
+        "//:bazel_python_venv",
     ],
     visibility = ["//:__subpackages__"],
 )
@@ -133,11 +40,17 @@ genrule(
 sh_binary(
     name = "coverage_report",
     srcs = ["coverage_report.sh"],
-    data = [
-        "//:pip_packages",
-        "//:pywrapper",
-        "@python_3//:installdir",
-    ],
+    deps = [":_dummy_coverage_report"],
+)
+
+# This is only to get bazel_python_venv as a data dependency for
+# coverage_report above. For some reason, this doesn't work if we directly put
+# it on the sh_binary. This is a known issue:
+# https://github.com/bazelbuild/bazel/issues/1147#issuecomment-428698802
+sh_library(
+    name = "_dummy_coverage_report",
+    srcs = ["coverage_report.sh"],
+    data = ["//:bazel_python_venv"],
 )
 
 # For wheel-ifying the Python code.
@@ -156,23 +69,23 @@ genrule(
     ],
     outs = ["pysyrenn.dist"],
     cmd = """
-    PYTHON=$(location pywrapper)
-    export PYTHONPATH=$$PWD:$(location //:pip_packages)
+    PYTHON_VENV=$(location //:bazel_python_venv)
+    pushd $$PYTHON_VENV/..
+    source bazel_python_venv_installed/bin/activate
+    popd
 
     mkdir -p syrenn_proto
     cp -Lr $(locations //syrenn_proto:syrenn_py_grpc) syrenn_proto
     cp -Lr $(locations //syrenn_proto:syrenn_py_proto) syrenn_proto
     touch syrenn_proto/__init__.py
     cp pip_info/* .
-    $$PYTHON setup.py sdist bdist_wheel
+    python3 setup.py sdist bdist_wheel
 
     cp -r dist $@
     """,
     tools = [
-        "pywrapper",
-        "//:pip_packages",
+        "//:bazel_python_venv",
         "//syrenn_proto:syrenn_py_grpc",
         "//syrenn_proto:syrenn_py_proto",
-        "@python_3//:installdir",
     ],
 )

@@ -22,7 +22,6 @@ py_library(
     srcs = ["transformer_client.py"],
     visibility = ["//pysyrenn/frontend:__subpackages__"],
     deps = [
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -42,7 +41,6 @@ py_library(
         ":relu_layer",
         ":strided_window_data",
         ":transformer_client",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -60,7 +58,6 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":layer",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -71,7 +68,6 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":layer",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -82,7 +78,6 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":layer",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -93,7 +88,6 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":layer",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -104,7 +98,6 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":layer",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -114,7 +107,6 @@ py_library(
     srcs = ["strided_window_data.py"],
     visibility = ["//:__subpackages__"],
     deps = [
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -126,7 +118,6 @@ py_library(
     deps = [
         ":layer",
         ":strided_window_data",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -138,7 +129,6 @@ py_library(
     deps = [
         ":layer",
         ":strided_window_data",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -150,7 +140,6 @@ py_library(
     deps = [
         ":layer",
         ":strided_window_data",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )
@@ -161,7 +150,6 @@ py_library(
     visibility = ["//:__subpackages__"],
     deps = [
         ":layer",
-        "//:pip-packages",
         "//syrenn_proto:syrenn_py_grpc",
     ],
 )

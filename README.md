@@ -103,26 +103,39 @@ is already freezing/running out of memory, consider removing the existing
 ``-j#`` flags from ``external/*.BUILD``.
 
 #### Local Builds
-You must install [Bazel](https://bazel.build/) 1.1.0 and have binaries for
-building arbitrary C++ packages (eg. ``build-essential`` for Ubuntu).
-Furthermore, the ``libcairo2``, ``libffi-dev``, ``zlib1g-dev``, ``zip``, and
-``libgmp3-dev`` packages are required for the Python code (but usually come
-pre-installed with most desktop Linux distributions). A
-[Dockerfile](Dockerfile) is provided with a compatible setup for reference.
-Note that Bazel will _automatically_ download and build copies of OpenSSL,
-Python 3.7.4, Intel TBB, Intel MKLDNN, Eigen, OpenBLAS, PyTorch, and all PIP
-dependencies to the Bazel environment when applicable --- they do not need to
-be manually installed.
+1. You must install [Bazel](https://bazel.build/) 1.1.0 and have binaries for
+   building arbitrary C++ packages (eg. ``build-essential`` for Ubuntu).
+2. Furthermore, the ``libcairo2``, ``libffi-dev``, ``zlib1g-dev``, ``zip``, and
+   ``libgmp3-dev`` packages are required for the Python code (but usually come
+   pre-installed with most desktop Linux distributions).
+3. You must follow the "One-Time Setup" instructions in
+   [bazel_python](https://github.com/95616ARG/bazel_python) to install a fresh
+   copy of Python 3.7.4. This can be done per-user without root permissions.
+   This is **not** necessary if you only want to run the server, e.g., if you
+   just want to use the `pysyrenn` package from PyPI. It **is**, however,
+   required to run any of the Python code in this repository with Bazel,
+   including the Python tests.
+4. A [Dockerfile](Dockerfile) is provided with a compatible setup for
+   reference.  Note that Bazel will _automatically_ download and build copies
+   of Intel TBB, Intel MKLDNN, Eigen, OpenBLAS, PyTorch, and all PIP
+   dependencies to the Bazel environment when applicable --- they do not need
+   to be manually installed.
 
 #### Docker Builds
 Alternatively, a Docker container is provided to simplify the build and running
 process. To use it, first build the image with ``./docker_build.sh`` then
 prepend ``./docker_run.sh`` to all of the commands below. For example, instead
 of ``make start_server``, use ``./docker_run.sh make start_server``. Everything
-should be handled transparently. **NOTE:** Benchexec is currently not supported
-under the Docker container due to permission errors. It is possible to resolve
-this by removing all of the user-related lines from [Dockerfile](Dockerfile),
-but that will likely cause issues with Bazel and generated file permissions.
+should be handled transparently.
+
+**NOTE:** Benchexec is currently not supported under the Docker container due
+to permission errors. It is possible to resolve this by removing all of the
+user-related lines from [Dockerfile](Dockerfile), but that will likely cause
+issues with Bazel and generated file permissions.
+
+**NOTE:** Docker-in-docker does not seem to currently be working. This means
+some builds will fail, although you should be able to run `make start_server`,
+`bazel test //pysyrenn/...`, and `bazel test //syrenn_server/...`.
 
 ### Configuration
 There are two major things to configure before using the code:
@@ -217,8 +230,7 @@ There are three main pieces to the library:
 
 A few other directories also exist:
 
-- [external/](external) contains Bazel BUILD rules for GTEST, Python 3.7.4 (including
-  OpenSSL), and TBB.
+- [external/](external) contains Bazel BUILD rules for GTEST, Eigen, and TBB.
 - [models/](models) contains Bazel rules either generating, downloading, or
   referencing trained models from the ERAN, ACAS Xu, and VRL projects (prior
   work). ERAN models are downloaded in WORKSPACE and referenced in

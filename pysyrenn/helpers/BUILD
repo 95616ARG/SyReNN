@@ -15,9 +15,6 @@ py_library(
     name = "integrated_gradients",
     srcs = ["integrated_gradients.py"],
     visibility = [":__subpackages__"],
-    deps = [
-        "//:pip-packages",
-    ],
 )
 
 py_library(
@@ -25,7 +22,6 @@ py_library(
     srcs = ["classify_lines.py"],
     visibility = [":__subpackages__"],
     deps = [
-        "//:pip-packages",
         "//pysyrenn/frontend:argmax_layer",
         "//pysyrenn/frontend:network",
     ],
@@ -36,7 +32,6 @@ py_library(
     srcs = ["classify_planes.py"],
     visibility = [":__subpackages__"],
     deps = [
-        "//:pip-packages",
         "//pysyrenn/frontend:argmax_layer",
         "//pysyrenn/frontend:network",
     ],
@@ -48,7 +43,6 @@ py_library(
     visibility = [":__subpackages__"],
     deps = [
         ":masking_network",
-        "//:pip-packages",
         "//pysyrenn/frontend:fullyconnected_layer",
         "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:relu_layer",
@@ -60,7 +54,6 @@ py_library(
     srcs = ["masking_network.py"],
     visibility = [":__subpackages__"],
     deps = [
-        "//:pip-packages",
         "//pysyrenn/frontend:fullyconnected_layer",
         "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:relu_layer",

@@ -4,7 +4,8 @@ protobuf==3.9.2
 grpcio==1.24.0
 onnx==1.5.0
 tqdm==4.36.1
-# Torch is installed in the BUILD script and specified in pip_info/setup.py.
+# TORCH-CPU IS INSTALLED SEPARATELY. For some reason it doesn't work if we
+# install it here. It is also manually included in pip-info.
 aenum==2.2.1
 # END
 coverage==4.5.4

@@ -1,28 +1,17 @@
 workspace(name = "SyReNN")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
-
-# Get the Python interpreter & build dependency (OpenSSL).
-# https://stackoverflow.com/questions/47036855
-http_archive(
-    name = "openssl",
-    build_file = "openssl.BUILD",
-    sha256 = "cabd5c9492825ce5bd23f3c3aeed6a97f8142f606d893df216411f07d1abab96",
-    strip_prefix = "openssl-1.0.2s",
-    urls = ["https://www.openssl.org/source/old/1.0.2/openssl-1.0.2s.tar.gz"],
-)
-
-http_archive(
-    name = "python_3",
-    build_file = "python.BUILD",
-    sha256 = "d63e63e14e6d29e17490abbe6f7d17afb3db182dbd801229f14e55f4157c4ba3",
-    strip_prefix = "Python-3.7.4",
-    urls = ["https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz"],
-)
-
-register_toolchains("//:python3-toolchain")
-
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "bazel_python",
+    commit = "5edcf3b97c4c77b654af177bfa27558d9b88b52f",
+    remote = "https://github.com/95616ARG/bazel_python.git",
+)
+
+load("@bazel_python//:bazel_python.bzl", "bazel_python")
+
+bazel_python()
 
 # EIGEN SUPPORT
 # See the README in: https://github.com/bazelbuild/rules_foreign_cc
