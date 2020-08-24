@@ -43,4 +43,8 @@ jobs:
         chmod +x install.sh
         ./install.sh --user
         rm -f install.sh
+        git clone https://github.com/95616ARG/bazel_python.git
+        cd bazel_python
+        echo y | ./setup_python.sh 3.7.4 $HOME/.bazel_python
+        cd .. && rm -rf bazel_python
         /home/runner/bin/bazel test pysyrenn/...
