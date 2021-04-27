@@ -1,4 +1,4 @@
-__version__ = "1.0"
+__version__ = "1.1"
 __title__ = "pysyrenn"
 __description__ = "Symbolic Representations for Neural Networks"
 __uri__ = "https://github.com/95616ARG/SyReNN"

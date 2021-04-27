@@ -2,7 +2,7 @@
 """
 import numpy as np
 import torch
-from helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend.strided_window_data import StridedWindowData
 from pysyrenn.frontend.fullyconnected_layer import FullyConnectedLayer
 from pysyrenn.frontend.normalize_layer import NormalizeLayer

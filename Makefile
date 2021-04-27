@@ -1,7 +1,7 @@
 .PHONY: pysyrenn_coverage start_server acas_lines_experiment \
         integrated_gradients_experiment linearity_hypothesis_experiment \
         exactline_experiments toy_examples_experiment acas_planes_experiment \
-	model_checking_experiment netpatch_experiment plane_experiments \
+	model_checking_experiment plane_experiments \
 	all_experiments
 
 pysyrenn_coverage:
@@ -40,12 +40,8 @@ model_checking_experiment:
 	@echo "Running the Bounded Model Checking experiment"
 	bazel run experiments:model_checking
 
-netpatch_experiment:
-	@echo "Running the Network Patching experiment"
-	bazel run experiments:netpatch
-
 plane_experiments: toy_examples_experiment acas_planes_experiment \
-		   model_checking_experiment netpatch_experiment
+		   model_checking_experiment
 
 # Run experiments from [1] and [2]
 all_experiments: exactline_experiments plane_experiments

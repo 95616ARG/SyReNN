@@ -1,4 +1,4 @@
-load("@bazel_python//:bazel_python.bzl", "bazel_python_interpreter")
+load("@bazel_python//:bazel_python.bzl", "bazel_python_coverage_report", "bazel_python_interpreter")
 
 bazel_python_interpreter(
     name = "bazel_python_venv",
@@ -36,21 +36,10 @@ genrule(
     visibility = ["//:__subpackages__"],
 )
 
-# For generating the coverage report.
-sh_binary(
+bazel_python_coverage_report(
     name = "coverage_report",
-    srcs = ["coverage_report.sh"],
-    deps = [":_dummy_coverage_report"],
-)
-
-# This is only to get bazel_python_venv as a data dependency for
-# coverage_report above. For some reason, this doesn't work if we directly put
-# it on the sh_binary. This is a known issue:
-# https://github.com/bazelbuild/bazel/issues/1147#issuecomment-428698802
-sh_library(
-    name = "_dummy_coverage_report",
-    srcs = ["coverage_report.sh"],
-    data = ["//:bazel_python_venv"],
+    code_paths = ["pysyrenn/*/*.py"],
+    test_paths = ["pysyrenn/*/tests/*"],
 )
 
 # For wheel-ifying the Python code.

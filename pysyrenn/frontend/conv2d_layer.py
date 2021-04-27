@@ -16,8 +16,12 @@ class Conv2DLayer(NetworkLayer):
         self.filter_weights = torch.tensor(filter_weights, dtype=torch.float32)
         self.biases = torch.tensor(biases, dtype=torch.float32)
 
-    def compute(self, inputs):
+    def compute(self, inputs, jacobian=False):
         """Computes the 2D convolution given an input vector.
+
+        If @jacobian=True, it only computes the homogeneous portion (i.e., does
+        not add biases). This can be used to compute the product of the
+        Jacobian of the layer with its inputs.
         """
         is_np = isinstance(inputs, np.ndarray)
         if is_np:
@@ -31,6 +35,8 @@ class Conv2DLayer(NetworkLayer):
         # ERAN gives us HWIcOc, but Pytorch takes OcIcHW
         filters = self.filter_weights.permute((3, 2, 0, 1))
         biases = self.biases
+        if jacobian:
+            biases = torch.zeros_like(biases)
 
         output = torch.nn.functional.conv2d(inputs, filters, biases,
                                             self.window_data.strides,
@@ -39,7 +45,7 @@ class Conv2DLayer(NetworkLayer):
         output = output.permute((0, 2, 3, 1))
         output = output.reshape((output_batches, -1))
         if is_np:
-            return output.numpy()
+            return output.detach().numpy()
         return output
 
     def serialize(self):

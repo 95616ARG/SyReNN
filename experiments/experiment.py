@@ -10,7 +10,7 @@ import tarfile
 import numpy as np
 from PIL import Image
 import imageio
-from pysyrenn import Network, MaskingNetwork
+from pysyrenn import Network
 from syrenn_proto import syrenn_pb2 as syrenn_pb
 
 class Experiment:
@@ -318,7 +318,7 @@ class Experiment:
         elif artifact_type == "matplotlib":
             filename += ".pdf"
             artifact.savefig(filename)
-        elif artifact_type in ("network", "masking_network"):
+        elif artifact_type in "network":
             filename += ".pb"
             write_pb(filename, artifact.serialize())
         elif artifact_type == "svg":
@@ -378,9 +378,6 @@ class Experiment:
         if artifact["type"] == "network":
             return Network.deserialize(
                 read_pb(artifact["path"], syrenn_pb.Network))
-        if artifact["type"] == "masking_network":
-            return MaskingNetwork.deserialize(
-                read_pb(artifact["path"], syrenn_pb.MaskingNetwork))
         raise NotImplementedError
 
     @staticmethod

@@ -1,6 +1,6 @@
 """Tests the methods in relu_layer.py
 """
-from helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend.layer import NetworkLayer
 
 def test_stubs():
