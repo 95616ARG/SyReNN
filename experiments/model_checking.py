@@ -1,5 +1,6 @@
 """Methods for performing bounded model checking on neural net controllers.
 """
+from collections import defaultdict
 import itertools
 from timeit import default_timer as timer
 import numpy as np
@@ -97,7 +98,7 @@ class ModelCheckingExperiment(Experiment):
         """
         A_ub, b_ub = cls.facet_enumeration(plane)
         resulting_planes = []
-        for pre_plane in transition_partitions:
+        for pre_plane in transition_partitions.possibly_intersecting(plane):
             pre_intersection = cls.compute_intersection(pre_plane, plane)
             if pre_intersection:
                 actions = network.compute(pre_intersection)
@@ -121,13 +122,15 @@ class ModelCheckingExperiment(Experiment):
         value = product.T + faces[:, -1] # (n_points x n_constraints)
         return np.all(value <= 0)
 
-    def run_for_model(self, model_name, timeout_minutes):
+    def run_for_model(self, model_name, timeout_minutes,
+                      eval_network=None, write_name=None):
         """Runs the BMC for a particular model.
         """
         network = self.load_network("vrl_%s" % model_name)
+        eval_network = eval_network or network
         model = VRLModel(model_name)
 
-        out_file = self.begin_csv("%s/data" % model_name,
+        out_file = self.begin_csv(write_name or "%s/data" % model_name,
                                   ["Step", "Cumulative Time", "Counter Example?"])
 
         safe = model.safe_set(as_box=False)
@@ -140,9 +143,9 @@ class ModelCheckingExperiment(Experiment):
         safe_transformed = network.transform_planes(disjunctive_safe,
                                                     compute_preimages=True,
                                                     include_post=False)
-        safe_transitions = []
-        for transformed_plane in safe_transformed:
-            safe_transitions.extend(transformed_plane)
+        safe_transitions = TransformerLUT([
+            vpolytope for upolytope in safe_transformed
+            for vpolytope in upolytope])
         time_taken += (timer() - start_time)
 
         planes = [model.init_set(as_vertices=True)]
@@ -153,12 +156,13 @@ class ModelCheckingExperiment(Experiment):
             new_planes = []
             for plane in planes:
                 new_planes.extend(
-                    self.transition_plane(model, network, plane,
+                    self.transition_plane(model, eval_network, plane,
                                           safe_transitions))
             new_planes = list(map(np.array, new_planes))
             print("Before removing in init_x/y:", len(new_planes))
-            new_planes = [plane for plane in new_planes
+            new_planes = [np.array(plane) for plane in new_planes
                           if not self.in_h_rep(plane, init)]
+            print("After removing:", len(new_planes))
             found_bad_state = False
             for plane in new_planes:
                 if not self.in_h_rep(plane, safe):
@@ -193,6 +197,71 @@ class ModelCheckingExperiment(Experiment):
         (Plots produced directly in the LaTeX with PGFPlots)
         """
         return False
+
+class TransformerLUT:
+    """Stores a set of polytopes.
+
+    Optimized to quickly over-approximate the set of polytopes which may
+    intersect with a given polytope.
+    """
+    def __init__(self, polytopes=None):
+        """Initializes the TransformerLUT.
+        """
+        polytopes = polytopes or []
+        self.polytope_lut = defaultdict(set)
+        self.all_polytopes = set()
+        if polytopes:
+            self.initialize_stats(polytopes)
+        else:
+            self.grid_lb = np.array([-1., -1.])
+            self.grid_ub = np.array([1., 1.])
+            self.grid_delta = np.array([1., 1.])
+        for polytope in polytopes:
+            self.register_polytope(polytope)
+
+    def initialize_stats(self, polytopes):
+        """Sets the partitioning used by the TransformerLUT hash table.
+        """
+        self.grid_lb = np.array([np.inf, np.inf])
+        self.grid_ub = np.array([-np.inf, -np.inf])
+        deltas = []
+        self.grid_delta = np.array([np.inf, np.inf])
+        for polytope in polytopes:
+            box_lb = np.min(polytope, axis=0)
+            box_ub = np.max(polytope, axis=0)
+            self.grid_lb = np.minimum(self.grid_lb, box_lb)
+            self.grid_ub = np.maximum(self.grid_ub, box_ub)
+            deltas.append(box_ub - box_lb)
+        deltas = np.array(deltas)
+        self.grid_delta = np.percentile(deltas, 25, axis=0)
+
+    def keys_for(self, polytope):
+        """Returns the keys in the hash table corresponding to @polytope.
+        """
+        keys = set()
+        box_lb = np.min(polytope, axis=0)
+        box_ub = np.max(polytope, axis=0)
+        min_key = np.floor((box_lb - self.grid_lb) / self.grid_delta).astype(int)
+        max_key = np.ceil((box_ub - self.grid_lb) / self.grid_delta).astype(int)
+        for x in range(min_key[0], max_key[0] + 1):
+            for y in range(min_key[1], max_key[1] + 1):
+                yield (x, y)
+
+    def register_polytope(self, polytope):
+        """Adds @polytope to the TransformerLUT.
+        """
+        polytope = tuple(map(tuple, polytope))
+        self.all_polytopes.add(polytope)
+        for key in self.keys_for(polytope):
+            self.polytope_lut[key].add(polytope)
+
+    def possibly_intersecting(self, polytope):
+        """Returns a superset of the polytopes which may intersect @polytope.
+        """
+        polytopes = set()
+        for key in self.keys_for(polytope):
+            polytopes |= self.polytope_lut[key]
+        return sorted(polytopes)
 
 if __name__ == "__main__":
     ModelCheckingExperiment("model_checking").main()
