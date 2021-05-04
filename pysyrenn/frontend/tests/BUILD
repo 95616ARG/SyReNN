@@ -90,6 +90,7 @@ py_test(
         "//pysyrenn/frontend:concat_layer",
         "//pysyrenn/frontend:conv2d_layer",
         "//pysyrenn/frontend:fullyconnected_layer",
+        "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:normalize_layer",
         "//pysyrenn/frontend:strided_window_data",
         "@bazel_python//:pytest_helper",
