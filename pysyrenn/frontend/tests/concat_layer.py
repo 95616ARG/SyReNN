@@ -114,8 +114,8 @@ def test_compute_invalid():
 def test_serialize():
     """Tests that the Concat layer correctly serializes itself.
     """
-    n_inputs = 1025
-    fullyconnected_outputs = 2046
+    n_inputs = 125
+    fullyconnected_outputs = 246
 
     weights = np.random.uniform(size=(n_inputs, fullyconnected_outputs))
     biases = np.random.uniform(size=(fullyconnected_outputs))
@@ -130,12 +130,31 @@ def test_serialize():
     serialized = concat_layer.serialize()
     assert serialized.WhichOneof("layer_data") == "concat_data"
 
-    
     assert (serialized.concat_data.concat_along ==
             transformer_pb.ConcatLayerData.ConcatAlong.Value(
                 "CONCAT_ALONG_FLAT"))
     assert len(serialized.concat_data.layers) == 2
     assert serialized.concat_data.layers[0] == fullyconnected_layer.serialize()
     assert serialized.concat_data.layers[1] == normalize_layer.serialize()
+
+    # TODO: This does not check that deserialized.input_layers was done
+    # correctly, but that should be the case as long as their deserialize
+    # methods work (tested in their respective files).
+    deserialized = ConcatLayer.deserialize(serialized)
+    assert deserialized.concat_along == ConcatAlong.FLAT
+
+    serialized.relu_data.SetInParent()
+    deserialized = ConcatLayer.deserialize(serialized)
+    assert deserialized is None
+
+    concat_layer.concat_along = ConcatAlong.CHANNELS
+    deserialized = ConcatLayer.deserialize(concat_layer.serialize())
+    assert deserialized.concat_along == ConcatAlong.CHANNELS
+
+    try:
+        ConcatAlong.deserialize(5)
+        assert False, "Should have errored on unrecognized serialization."
+    except NotImplementedError:
+        pass
 
 main(__name__, __file__)

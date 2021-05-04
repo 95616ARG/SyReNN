@@ -34,6 +34,8 @@ def test_compute():
                                     stride, pad, out_channels)
     conv2d_layer = Conv2DLayer(window_data, filters, biases)
     assert np.allclose(conv2d_layer.compute(inputs), true_outputs)
+    assert np.allclose(conv2d_layer.compute(inputs, jacobian=True),
+                       np.zeros_like(true_outputs))
 
     torch_inputs = torch.FloatTensor(inputs)
     torch_outputs = conv2d_layer.compute(torch_inputs).numpy()
