@@ -72,15 +72,6 @@ http_archive(
 )
 
 ##### BEGIN GRPC #####
-# git_repository(
-#     name = "upb",
-#     commit = "10a18cc12c2ebbcc0ed3aac1e61ae75d9bfc69d8",
-#     shallow_since = "1571692427 -0700",
-#     remote = "https://github.com/matthewsot/upb.git",
-# )
-# load("@upb//bazel:workspace_deps.bzl", "upb_deps")
-# upb_deps()
-# 
 git_repository(
     name = "com_github_grpc_grpc",
     commit = "8664c8334c05d322fbbdfb9e3b24601a23e9363c",
@@ -92,8 +83,6 @@ grpc_deps()
 # This is annoying and bloated because it assumes we want, e.g., Go support.
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 grpc_extra_deps()
-# load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
-# apple_rules_dependencies()
 
 ##### END GRPC #####
 
