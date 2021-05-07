@@ -5,12 +5,12 @@ on: [push]
 
 jobs:
   test-server:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v1
     - name: Build and test the C++ SyReNN server.
       run: |
-        V=1.1.0
+        V=4.0.0
         OS=linux
         ARCH=x86_64
         GH_BASE="https://github.com/bazelbuild/bazel/releases/download/$V"
@@ -25,12 +25,12 @@ jobs:
         rm -f install.sh
         /home/runner/bin/bazel test syrenn_server/...
   test-client:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v1
     - name: Build and test the Python SyReNN frontend (PySyReNN), skipping one resource-intensive test and a few that rely on the server to be running.
       run: |
-        V=1.1.0
+        V=4.0.0
         OS=linux
         ARCH=x86_64
         GH_BASE="https://github.com/bazelbuild/bazel/releases/download/$V"
