@@ -16,12 +16,7 @@ cmake(
         "WITH_EXAMPLE": "OFF",
     },
     lib_source = "all",
-    # make_commands = [
-    #     "make -j8",
-    #     "make install",
-    #     "ls",
-    # ],
-    out_shared_libs = ["libmkldnn.so.1.0"],
+    out_shared_libs = ["libmkldnn.so.1.0", "libmkldnn.so.1", "libmkldnn.so"],
     visibility = ["//visibility:public"],
     alwayslink = True,
 )

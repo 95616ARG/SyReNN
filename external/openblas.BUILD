@@ -16,10 +16,6 @@ cmake(
     },
     lib_source = "all",
     linkopts = ["-lpthread"],
-    # make_commands = [
-    #     "make -j4",
-    #     "make install",
-    # ],
     # We are selecting the resulting static library to be passed in C/C++ provider
     # as the result of the build;
     # However, the cmake_external dependants could use other artefacts provided by the build,

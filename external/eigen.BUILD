@@ -15,10 +15,6 @@ cmake(
     },
     out_headers_only = True,
     lib_source = "all",
-    # make_commands = [
-    #     "make",
-    #     "make install",
-    # ],
     visibility = ["//visibility:public"],
     # Dependency on other cmake_external rule; can also depend on cc_import, cc_library rules
     deps = ["@openblas"],
