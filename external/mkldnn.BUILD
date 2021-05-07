@@ -3,10 +3,10 @@ filegroup(
     srcs = glob(["**"]),
 )
 
-load("@rules_foreign_cc//tools/build_defs:cmake.bzl", "cmake_external")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake")
 
 # MKL-DNN for conv2d
-cmake_external(
+cmake(
     name = "mkldnn",
     cache_entries = {
         # MKL-DNN's source throws set-but-not-used warnings with -Werror,
@@ -16,12 +16,12 @@ cmake_external(
         "WITH_EXAMPLE": "OFF",
     },
     lib_source = "all",
-    make_commands = [
-        "make -j8",
-        "make install",
-        "ls",
-    ],
-    shared_libraries = ["libmkldnn.so.1"],
+    # make_commands = [
+    #     "make -j8",
+    #     "make install",
+    #     "ls",
+    # ],
+    out_shared_libs = ["libmkldnn.so.1.0"],
     visibility = ["//visibility:public"],
     alwayslink = True,
 )

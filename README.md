@@ -66,14 +66,11 @@ limit use to only the first 16 cores as shown in ``.bazelrc``.
 
 Note that because we compile (almost) everything from source, the first build
 *will likely take a long time*; at least a few minutes. Subsequent builds
-should be much faster. If you have multiple processing cores on your machine
-and would like to use them to speed up the build, you can modify the ``make``
-commands in ``external/*.BUILD`` to ``make -j`` followed by the number of
-threads you would like Make to run. However, because Bazel will simultaneously
-be running other builds processes, too much use of parallelism in the ``make``
-calls can sometimes cause freezing and running out of memory. If your computer
-is already freezing/running out of memory, consider removing the existing
-``-j#`` flags from ``external/*.BUILD``.
+should be much faster. By default, each `make` initiated by Bazel will try to use
+`$(nproc) / 4` processors available on your machine. However, Bazel will also
+parallelize the build, so this could result in a multiple of that number of
+threads. ***If you find your machine hanging or crashing,*** modify `.bazelrc`
+to specify a lower number of cores.
 
 #### Local Builds
 1. You must install [Bazel](https://bazel.build/) 1.1.0 and have binaries for
