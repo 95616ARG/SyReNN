@@ -16,13 +16,19 @@ class FullyConnectedLayer(NetworkLayer):
         if biases is not None:
             self.biases = torch.tensor(biases, dtype=torch.float32)
 
-    def compute(self, inputs):
+    def compute(self, inputs, jacobian=False):
         """Returns the output of the layer on @inputs.
+
+        If @jacobian=True, it only computes the homogeneous portion (i.e., does
+        not add biases). This can be used to compute the product of the
+        Jacobian of the layer with its inputs.
         """
         is_np = isinstance(inputs, np.ndarray)
         if is_np:
             inputs = torch.tensor(inputs, dtype=torch.float32)
-        output = torch.mm(inputs, self.weights) + self.biases
+        output = torch.mm(inputs, self.weights)
+        if not jacobian:
+            output += self.biases
         if is_np:
             return output.numpy()
         return output

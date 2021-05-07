@@ -4,8 +4,8 @@ py_test(
     srcs = ["classify_lines.py"],
     deps = [
         "//pysyrenn/frontend",
-        "//pysyrenn/frontend/tests:helpers",
         "//pysyrenn/helpers:classify_lines",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -15,8 +15,8 @@ py_test(
     srcs = ["classify_planes.py"],
     deps = [
         "//pysyrenn/frontend",
-        "//pysyrenn/frontend/tests:helpers",
         "//pysyrenn/helpers:classify_planes",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -26,29 +26,7 @@ py_test(
     srcs = ["integrated_gradients.py"],
     deps = [
         "//pysyrenn/frontend",
-        "//pysyrenn/frontend/tests:helpers",
         "//pysyrenn/helpers:integrated_gradients",
-    ],
-)
-
-py_test(
-    name = "masking_network",
-    size = "small",
-    srcs = ["masking_network.py"],
-    deps = [
-        "//pysyrenn/frontend",
-        "//pysyrenn/frontend/tests:helpers",
-        "//pysyrenn/helpers:masking_network",
-    ],
-)
-
-py_test(
-    name = "netpatch",
-    size = "small",
-    srcs = ["netpatch.py"],
-    deps = [
-        "//pysyrenn/frontend",
-        "//pysyrenn/frontend/tests:helpers",
-        "//pysyrenn/helpers:netpatch",
+        "@bazel_python//:pytest_helper",
     ],
 )

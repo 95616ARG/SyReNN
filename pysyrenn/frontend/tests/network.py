@@ -3,7 +3,7 @@
 import numpy as np
 import torch
 import pytest
-from helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend.network import Network
 from pysyrenn.frontend.conv2d_layer import Conv2DLayer
 from pysyrenn.frontend.fullyconnected_layer import FullyConnectedLayer

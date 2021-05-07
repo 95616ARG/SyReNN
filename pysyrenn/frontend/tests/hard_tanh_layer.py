@@ -2,7 +2,7 @@
 """
 import numpy as np
 import torch
-from helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend.hard_tanh_layer import HardTanhLayer
 
 def test_compute():

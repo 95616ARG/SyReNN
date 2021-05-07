@@ -9,8 +9,6 @@ compute desired properties of networks.
   points along a set of two-dimensional subspaces of the input space.
 - [IntegratedGradients](integrated_gradients.py) supports exactly computing
   integrated gradients for a network and baseline/image pairs.
-- [NetPatcher](netpatch.py) uses an interval-MAX-SMT solver and "MaskingNetwork"
-  architecture to "patch" neural networks to have particular classifications.
 
 ## Documentation
 Primary usage examples are available in [../experiments](../experiments) along

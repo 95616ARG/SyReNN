@@ -2,7 +2,7 @@
 """
 import numpy as np
 import torch
-from helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend.argmax_layer import ArgMaxLayer
 
 def test_compute():

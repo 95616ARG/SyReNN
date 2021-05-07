@@ -3,7 +3,7 @@
 import numpy as np
 import torch
 import pytest
-from pysyrenn.frontend.tests.helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend import Network, ReluLayer
 from pysyrenn.helpers.classify_lines import LinesClassifier
 

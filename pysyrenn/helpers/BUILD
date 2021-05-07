@@ -41,22 +41,10 @@ py_library(
     name = "netpatch",
     srcs = ["netpatch.py"],
     visibility = [":__subpackages__"],
-    deps = [
-        ":masking_network",
-        "//pysyrenn/frontend:fullyconnected_layer",
-        "//pysyrenn/frontend:network",
-        "//pysyrenn/frontend:relu_layer",
-    ],
 )
 
 py_library(
     name = "masking_network",
     srcs = ["masking_network.py"],
     visibility = [":__subpackages__"],
-    deps = [
-        "//pysyrenn/frontend:fullyconnected_layer",
-        "//pysyrenn/frontend:network",
-        "//pysyrenn/frontend:relu_layer",
-        "//syrenn_proto:syrenn_py_grpc",
-    ],
 )

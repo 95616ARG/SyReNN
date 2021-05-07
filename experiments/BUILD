@@ -91,16 +91,6 @@ py_binary(
 )
 
 py_binary(
-    name = "netpatch",
-    srcs = ["netpatch.py"],
-    deps = [
-        ":acas_planes",
-        ":polar_image",
-        "//pysyrenn",
-    ],
-)
-
-py_binary(
     name = "toy_examples",
     srcs = ["toy_examples.py"],
     deps = [

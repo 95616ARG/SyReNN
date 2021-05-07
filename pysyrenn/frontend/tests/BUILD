@@ -1,16 +1,10 @@
-py_library(
-    name = "helpers",
-    srcs = ["helpers.py"],
-    visibility = ["//:__subpackages__"],
-)
-
 py_test(
     name = "relu_layer",
     size = "small",
     srcs = ["relu_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:relu_layer",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -19,8 +13,8 @@ py_test(
     size = "small",
     srcs = ["hard_tanh_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:hard_tanh_layer",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -29,8 +23,8 @@ py_test(
     size = "small",
     srcs = ["argmax_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:argmax_layer",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -39,8 +33,8 @@ py_test(
     size = "small",
     srcs = ["fullyconnected_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:fullyconnected_layer",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -49,8 +43,8 @@ py_test(
     size = "small",
     srcs = ["normalize_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:normalize_layer",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -59,9 +53,9 @@ py_test(
     size = "small",
     srcs = ["averagepool_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:averagepool_layer",
         "//pysyrenn/frontend:strided_window_data",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -70,9 +64,9 @@ py_test(
     size = "small",
     srcs = ["maxpool_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:maxpool_layer",
         "//pysyrenn/frontend:strided_window_data",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -81,9 +75,9 @@ py_test(
     size = "small",
     srcs = ["conv2d_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:conv2d_layer",
         "//pysyrenn/frontend:strided_window_data",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -92,13 +86,14 @@ py_test(
     size = "small",
     srcs = ["concat_layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:averagepool_layer",
         "//pysyrenn/frontend:concat_layer",
         "//pysyrenn/frontend:conv2d_layer",
         "//pysyrenn/frontend:fullyconnected_layer",
+        "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:normalize_layer",
         "//pysyrenn/frontend:strided_window_data",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -107,8 +102,8 @@ py_test(
     size = "small",
     srcs = ["strided_window_data.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:strided_window_data",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -118,12 +113,12 @@ py_test(
     srcs = ["network.py"],
     data = ["@onnx_squeezenet//:all"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:argmax_layer",
         "//pysyrenn/frontend:fullyconnected_layer",
         "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:relu_layer",
         "//pysyrenn/frontend:transformer_client",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -132,8 +127,8 @@ py_test(
     size = "small",
     srcs = ["layer.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:layer",
+        "@bazel_python//:pytest_helper",
     ],
 )
 
@@ -142,10 +137,10 @@ py_test(
     size = "small",
     srcs = ["transformer_client.py"],
     deps = [
-        ":helpers",
         "//pysyrenn/frontend:fullyconnected_layer",
         "//pysyrenn/frontend:network",
         "//pysyrenn/frontend:relu_layer",
         "//pysyrenn/frontend:transformer_client",
+        "@bazel_python//:pytest_helper",
     ],
 )

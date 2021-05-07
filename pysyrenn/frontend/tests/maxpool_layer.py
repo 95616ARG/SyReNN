@@ -2,7 +2,7 @@
 """
 import numpy as np
 import torch
-from helpers import main
+from external.bazel_python.pytest_helper import main
 from pysyrenn.frontend.strided_window_data import StridedWindowData
 from pysyrenn.frontend.maxpool_layer import MaxPoolLayer
 
@@ -25,10 +25,19 @@ def test_compute():
                                     (2, 2), (2, 2), (0, 0), channels)
     maxpool_layer = MaxPoolLayer(window_data)
     assert np.allclose(maxpool_layer.compute(inputs), true_outputs)
+    output, indices = maxpool_layer.compute(inputs, return_indices=True)
+    assert np.allclose(output, true_outputs)
+    # TODO: Actually check true_indices itself.
+    assert np.allclose(maxpool_layer.from_indices(inputs, indices), output)
 
     torch_inputs = torch.FloatTensor(inputs)
     torch_outputs = maxpool_layer.compute(torch_inputs).numpy()
     assert np.allclose(torch_outputs, true_outputs)
+    torch_outputs, torch_indices = maxpool_layer.compute(torch_inputs,
+                                                         return_indices=True)
+    assert np.allclose(torch_outputs.numpy(), true_outputs)
+    torch_outputs = maxpool_layer.from_indices(torch_inputs, indices)
+    assert np.allclose(torch_outputs.numpy(), true_outputs)
 
 def test_serialize():
     """Tests that the MaxPool layer correctly [de]serializes itself.

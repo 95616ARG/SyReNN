@@ -144,6 +144,7 @@ py_library(
     ],
 )
 
+# NOTE: .deserialize(...) requires you also include :network.
 py_library(
     name = "concat_layer",
     srcs = ["concat_layer.py"],

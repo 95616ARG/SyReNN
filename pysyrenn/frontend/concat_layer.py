@@ -20,6 +20,14 @@ class ConcatAlong(aenum.Enum):
         full_name = "CONCAT_ALONG_{}".format(self.name)
         return transformer_pb.ConcatLayerData.ConcatAlong.Value(full_name)
 
+    @classmethod
+    def deserialize(cls, serialized):
+        if serialized == 1:
+            return ConcatAlong.CHANNELS
+        if serialized == 2:
+            return ConcatAlong.FLAT
+        raise NotImplementedError
+
 # pylint: disable=abstract-method
 class ConcatLayer(NetworkLayer):
     """Represents a concat layer in a network.
@@ -68,3 +76,15 @@ class ConcatLayer(NetworkLayer):
         ])
         serialized.concat_data.concat_along = self.concat_along.serialize()
         return serialized
+
+    @classmethod
+    def deserialize(cls, serialized):
+        """Deserializes the layer.
+        """
+        if serialized.WhichOneof("layer_data") == "concat_data":
+            from pysyrenn.frontend.network import Network
+            layers = Network.deserialize_layers(serialized.concat_data.layers)
+            concat_along = ConcatAlong.deserialize(
+                serialized.concat_data.concat_along)
+            return cls(layers, concat_along)
+        return None
