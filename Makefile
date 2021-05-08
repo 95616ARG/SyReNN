@@ -9,7 +9,7 @@ pysyrenn_coverage:
 	bazel run coverage_report
 
 start_server:
-	bazel run syrenn_server:server
+	bazel run syrenn_server:server --define=BAZEL_PYTHON_ONLY_WARN=true
 
 # Experiments from [1]
 acas_lines_experiment:
