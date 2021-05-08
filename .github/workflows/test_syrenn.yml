@@ -23,7 +23,7 @@ jobs:
         chmod +x install.sh
         ./install.sh --user
         rm -f install.sh
-        /home/runner/bin/bazel test syrenn_server/... --define=BAZEL_PYTHON_ONLY_WARN=true
+        /home/runner/bin/bazel test syrenn_server/... --define BAZEL_PYTHON_ONLY_WARN=true
   test-client:
     runs-on: ubuntu-20.04
     steps:
