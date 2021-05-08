@@ -73,7 +73,7 @@ threads. ***If you find your machine hanging or crashing,*** modify `.bazelrc`
 to specify a lower number of cores.
 
 #### Local Builds
-1. You must install [Bazel](https://bazel.build/) 1.1.0 and have binaries for
+1. You must install [Bazel](https://bazel.build/) 4.0.0 and have binaries for
    building arbitrary C++ packages (eg. ``build-essential`` for Ubuntu).
 2. Furthermore, the ``libcairo2``, ``libffi-dev``, ``zlib1g-dev``, ``zip``, and
    ``libgmp3-dev`` packages are required for the Python code (but usually come

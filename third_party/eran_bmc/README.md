@@ -7,7 +7,7 @@ We currently only test the [DeepPoly](https://doi.org/10.1145/3290354) domain
 on the Pendulum model. Other domains may be implemented in the future.
 
 # Building & Running
-1. Install Bazel 1.1.0, Docker (tested with version 18.09.6, build 481bc77),
+1. Install Bazel 4.0.0, Docker (tested with version 18.09.6, build 481bc77),
    and any prerequisites mentioned in [../../README.md](../../README.md).
 2. Ensure that the ``runexec`` line in [../../.bazelrc](../../.bazelrc) is
    commented out (we run ``runexec`` directly in the Docker containers).
