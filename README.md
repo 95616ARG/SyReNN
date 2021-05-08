@@ -95,7 +95,7 @@ to specify a lower number of cores.
 Alternatively, a Docker container is provided to simplify the build and running
 process. To use it, first build the image with ``./docker_build.sh`` then
 prepend ``./docker_run.sh`` to all of the commands below. For example, instead
-of ``make start_server``, use ``./docker_run.sh make start_server``. Everything
+of `make start_server`, use `./docker_run.sh make start_server`. Everything
 should be handled transparently.
 
 **NOTE:** Benchexec is currently not supported under the Docker container due
