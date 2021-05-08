@@ -13,8 +13,8 @@ cmake(
         "BLAS_VENDOR": "OpenBLAS",
         "BLAS_LIBRARIES": "$EXT_BUILD_DEPS/openblas/lib/libopenblas.a",
     },
-    out_headers_only = True,
     lib_source = "all",
+    out_headers_only = True,
     visibility = ["//visibility:public"],
     # Dependency on other cmake_external rule; can also depend on cc_import, cc_library rules
     deps = ["@openblas"],

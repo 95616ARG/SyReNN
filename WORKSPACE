@@ -25,7 +25,9 @@ git_repository(
     remote = "https://github.com/bazelbuild/rules_foreign_cc.git",
     shallow_since = "1620401997 -0700",
 )
+
 load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+
 rules_foreign_cc_dependencies()
 
 # OpenBLAS, Eigen, and MKLDNN source code repositories
@@ -75,13 +77,17 @@ http_archive(
 git_repository(
     name = "com_github_grpc_grpc",
     commit = "8664c8334c05d322fbbdfb9e3b24601a23e9363c",
-    shallow_since = "1619560885 -0700",
     remote = "https://github.com/grpc/grpc.git",
+    shallow_since = "1619560885 -0700",
 )
+
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
 grpc_deps()
+
 # This is annoying and bloated because it assumes we want, e.g., Go support.
 load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
+
 grpc_extra_deps()
 
 ##### END GRPC #####
