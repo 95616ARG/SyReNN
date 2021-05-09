@@ -5,7 +5,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "bazel_python",
-    commit = "f99ab8738dced7257c97dc719457f50a601ed84c",
+    commit = "cb4f346641afd090dc088c01df46dc403e600773",
     remote = "https://github.com/95616ARG/bazel_python.git",
 )
 
@@ -19,14 +19,14 @@ bazel_python()
 all_content = """filegroup(name = "all", srcs = glob(["**"]), visibility = ["//visibility:public"])"""
 
 # Rule repository
-http_archive(
+git_repository(
     name = "rules_foreign_cc",
-    sha256 = "82811053dbeb6cefabc9e69c6775ae45d4a13ebfc7c301cc3f6df3eb40947e99",
-    strip_prefix = "rules_foreign_cc-adb04eed2c058b4b161b321b1104eb55ef63b0f4",
-    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/adb04eed2c058b4b161b321b1104eb55ef63b0f4.zip",
+    commit = "b8b88cd2d16035aa1639434eb808f4d67a34d5ae",
+    remote = "https://github.com/bazelbuild/rules_foreign_cc.git",
+    shallow_since = "1620401997 -0700",
 )
 
-load("@rules_foreign_cc//:workspace_definitions.bzl", "rules_foreign_cc_dependencies")
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
 
 rules_foreign_cc_dependencies()
 
@@ -75,28 +75,20 @@ http_archive(
 
 ##### BEGIN GRPC #####
 git_repository(
-    name = "upb",
-    commit = "10a18cc12c2ebbcc0ed3aac1e61ae75d9bfc69d8",
-    remote = "https://github.com/matthewsot/upb.git",
-)
-
-load("@upb//bazel:workspace_deps.bzl", "upb_deps")
-
-upb_deps()
-
-git_repository(
     name = "com_github_grpc_grpc",
-    commit = "334c826e8c1a7283c822cd3f11cda1dddde734d7",
+    commit = "8664c8334c05d322fbbdfb9e3b24601a23e9363c",
     remote = "https://github.com/grpc/grpc.git",
+    shallow_since = "1619560885 -0700",
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
 
-load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
+# This is annoying and bloated because it assumes we want, e.g., Go support.
+load("@com_github_grpc_grpc//bazel:grpc_extra_deps.bzl", "grpc_extra_deps")
 
-apple_rules_dependencies()
+grpc_extra_deps()
 
 ##### END GRPC #####
 

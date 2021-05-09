@@ -66,17 +66,14 @@ limit use to only the first 16 cores as shown in ``.bazelrc``.
 
 Note that because we compile (almost) everything from source, the first build
 *will likely take a long time*; at least a few minutes. Subsequent builds
-should be much faster. If you have multiple processing cores on your machine
-and would like to use them to speed up the build, you can modify the ``make``
-commands in ``external/*.BUILD`` to ``make -j`` followed by the number of
-threads you would like Make to run. However, because Bazel will simultaneously
-be running other builds processes, too much use of parallelism in the ``make``
-calls can sometimes cause freezing and running out of memory. If your computer
-is already freezing/running out of memory, consider removing the existing
-``-j#`` flags from ``external/*.BUILD``.
+should be much faster. By default, each `make` initiated by Bazel will try to use
+`$(nproc) / 4` processors available on your machine. However, Bazel will also
+parallelize the build, so this could result in a multiple of that number of
+threads. ***If you find your machine hanging or crashing,*** modify `.bazelrc`
+to specify a lower number of cores.
 
 #### Local Builds
-1. You must install [Bazel](https://bazel.build/) 1.1.0 and have binaries for
+1. You must install [Bazel](https://bazel.build/) 4.0.0 and have binaries for
    building arbitrary C++ packages (eg. ``build-essential`` for Ubuntu).
 2. Furthermore, the ``libcairo2``, ``libffi-dev``, ``zlib1g-dev``, ``zip``, and
    ``libgmp3-dev`` packages are required for the Python code (but usually come
@@ -98,7 +95,7 @@ is already freezing/running out of memory, consider removing the existing
 Alternatively, a Docker container is provided to simplify the build and running
 process. To use it, first build the image with ``./docker_build.sh`` then
 prepend ``./docker_run.sh`` to all of the commands below. For example, instead
-of ``make start_server``, use ``./docker_run.sh make start_server``. Everything
+of `make start_server`, use `./docker_run.sh make start_server`. Everything
 should be handled transparently.
 
 **NOTE:** Benchexec is currently not supported under the Docker container due

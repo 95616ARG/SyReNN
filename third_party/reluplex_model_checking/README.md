@@ -4,7 +4,7 @@ counter-part to
 [../../experiments/model_checking.py](../../experiments/model_checking.py).
 
 # Building & Running
-1. Install Bazel 1.1.0, Docker (tested with version 18.09.6, build 481bc77),
+1. Install Bazel 4.0.0, Docker (tested with version 18.09.6, build 481bc77),
    and any prerequisites mentioned in [../../README.md](../../README.md).
 2. Ensure that the ``runexec`` line in [../../.bazelrc](../../.bazelrc) is
    commented out (we run ``runexec`` directly in the Docker containers).

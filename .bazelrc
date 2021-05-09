@@ -15,3 +15,6 @@ build \
 # build --action_env=LD_PRELOAD
 # test --action_env=LD_PRELOAD
 # run --action_env=LD_PRELOAD
+
+# Suggested here: https://github.com/bazelbuild/rules_foreign_cc/issues/528
+build --action_env='MAKEFLAGS="-j$(expr $(nproc) / 4 '|' 1) "'
