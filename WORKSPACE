@@ -5,7 +5,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "bazel_python",
-    commit = "cb4f346641afd090dc088c01df46dc403e600773",
+    commit = "538f6cfd5acdb2b5adfd7742d59ae196367b04dc",
     remote = "https://github.com/95616ARG/bazel_python.git",
 )
 
