@@ -2,7 +2,7 @@
 numpy==1.17.2
 protobuf==3.9.2
 grpcio==1.24.0
-onnx==1.5.0
+onnx==1.13.0
 tqdm==4.36.1
 # TORCH-CPU IS INSTALLED SEPARATELY. For some reason it doesn't work if we
 # install it here. It is also manually included in pip-info.
