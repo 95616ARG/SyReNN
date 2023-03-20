@@ -9,7 +9,7 @@ tqdm==4.36.1
 aenum==2.2.1
 # END
 coverage==4.5.4
-cairosvg==2.5.1
+cairosvg==2.7.0
 pytest==5.2.0
 imageio==2.5.0
 Pillow==8.3.2
